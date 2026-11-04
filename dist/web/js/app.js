@@ -7,15 +7,13 @@ let views = [], rooms = [], corTeto = null, ambAtual = null;
 
 function mostrarErro(html) { const e = $('#erro'); e.innerHTML = html; e.hidden = false; $('#carregando').classList.add('some'); }
 
-// ---------- câmera: transição suave (o model-viewer interpola θ/φ/raio/alvo/fov em direção ao "goal")
-function irPara(c, { salto = false } = {}) {
+// ---------- câmera: transição suave entre posições
+function irPara(c) {
   let theta = c.theta;
   try { const atual = (mv.getCameraOrbit().theta * 180) / Math.PI; theta += 360 * Math.round((atual - c.theta) / 360); } catch (e) { /* ainda sem modelo */ }
-  mv.autoRotate = false; $('#opt-giro').checked = false;
   mv.cameraOrbit = `${theta}deg ${c.phi}deg ${c.r}m`;
   mv.cameraTarget = `${c.target[0]}m ${c.target[1]}m ${c.target[2]}m`;
   mv.fieldOfView = `${c.fov}deg`;
-  if (salto) mv.jumpCameraToGoal();
 }
 
 function marcarVista(id) {
@@ -62,10 +60,8 @@ function montarUI() {
   rooms.forEach((r) => { const o = document.createElement('option'); o.value = r.id; o.textContent = r.nome; selAmb.appendChild(o); });
   selAmb.addEventListener('change', () => escolherAmbiente(selAmb.value));
   $('#opt-teto').addEventListener('change', (e) => setTeto(e.target.checked));
-  $('#opt-giro').addEventListener('change', (e) => { mv.autoRotate = e.target.checked; });
   $('#opt-sombra').addEventListener('change', (e) => { mv.shadowIntensity = e.target.checked ? 0.7 : 0; });
   $('#btn-reset').addEventListener('click', visaoGeral);
-  mv.addEventListener('camera-change', (e) => { if (e.detail?.source === 'user-interaction') { $('#opt-giro').checked = false; } });
 }
 
 // ---------- PWA: instalar + service worker

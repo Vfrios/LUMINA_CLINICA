@@ -121,7 +121,7 @@ RENDER_CAMS={
  'render_08_banheiro_acessivel':((775,150,1385),(920,60,1560),85,(1400,1000),True),
  'render_09_sala_ti':((615,165,55),(840,80,95),82,(1400,1000),True),
  'render_10_sala_peeling':((80,165,950),(300,70,800),82,(1600,1000),True),
- 'render_11_sala_drenagem':((80,165,590),(300,70,440),82,(1600,1000),True),
+ 'render_11_sala_drenagem':((380,165,570),(300,70,440),82,(1600,1000),True),
  'render_12_banheiro_clientes':((640,155,1405),(690,65,1515),82,(1400,1000),True),
 }
 def make_renders():
