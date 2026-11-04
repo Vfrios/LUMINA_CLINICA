@@ -1,0 +1,16 @@
+{
+  "name": "LÚMINA · Clínica de Estética e Biomedicina",
+  "short_name": "LÚMINA",
+  "description": "Passeio 3D conceitual pela clínica LÚMINA (10 × 20 m, 16 ambientes).",
+  "lang": "pt-BR",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#E3D3B5",
+  "theme_color": "#7A2E3A",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

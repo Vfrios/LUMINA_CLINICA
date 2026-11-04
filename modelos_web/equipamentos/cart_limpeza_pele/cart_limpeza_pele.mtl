@@ -1,0 +1,56 @@
+newmtl champagne
+Ka 0.355 0.325 0.254
+Kd 0.886 0.812 0.635
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+
+newmtl preto
+Ka 0.055 0.055 0.055
+Kd 0.137 0.137 0.137
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+
+newmtl branco_quente
+Ka 0.384 0.373 0.356
+Kd 0.961 0.933 0.890
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+
+newmtl marsala
+Ka 0.191 0.072 0.091
+Kd 0.478 0.180 0.227
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+
+newmtl nude
+Ka 0.361 0.322 0.293
+Kd 0.902 0.804 0.733
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+
+newmtl branco
+Ka 0.383 0.383 0.380
+Kd 0.957 0.957 0.949
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+
+newmtl tela
+Ka 0.042 0.053 0.075
+Kd 0.106 0.133 0.188
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+

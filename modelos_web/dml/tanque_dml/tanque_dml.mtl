@@ -1,0 +1,32 @@
+newmtl branco_quente
+Ka 0.384 0.373 0.356
+Kd 0.961 0.933 0.890
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+
+newmtl ceramica
+Ka 0.381 0.378 0.370
+Kd 0.953 0.945 0.925
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+
+newmtl inox
+Ka 0.315 0.315 0.311
+Kd 0.788 0.788 0.776
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+
+newmtl champagne
+Ka 0.355 0.325 0.254
+Kd 0.886 0.812 0.635
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+

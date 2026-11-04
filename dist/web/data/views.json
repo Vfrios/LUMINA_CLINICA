@@ -1,0 +1,170 @@
+[
+ {
+  "id": "recepcao",
+  "rotulo": "Recepção",
+  "descricao": "Balcão, painel e letreiro LÚMINA",
+  "render": "render_03_recepcao.png",
+  "interno": true,
+  "fov": 80,
+  "eye": [
+   5.0,
+   1.65,
+   19.6
+  ],
+  "target": [
+   2.15,
+   1.5,
+   17.0
+  ],
+  "theta": 47.626,
+  "phi": 87.773,
+  "r": 3.861
+ },
+ {
+  "id": "espera",
+  "rotulo": "Sala de espera",
+  "descricao": "Sofá, poltronas e painel ripado",
+  "render": "render_04_sala_espera.png",
+  "interno": true,
+  "fov": 82,
+  "eye": [
+   4.52,
+   1.6,
+   16.55
+  ],
+  "target": [
+   8.8,
+   0.85,
+   19.0
+  ],
+  "theta": -119.788,
+  "phi": 81.353,
+  "r": 4.988
+ },
+ {
+  "id": "tecnologia",
+  "rotulo": "Tecnologia",
+  "descricao": "Ultraformer / Lavieen (ilustrativos)",
+  "render": "render_05_sala_tecnologia.png",
+  "interno": true,
+  "fov": 82,
+  "eye": [
+   6.0,
+   1.65,
+   9.05
+  ],
+  "target": [
+   9.0,
+   0.85,
+   6.4
+  ],
+  "theta": -48.545,
+  "phi": 78.698,
+  "r": 4.082
+ },
+ {
+  "id": "botox",
+  "rotulo": "Sala de Botox",
+  "descricao": "Procedimentos faciais",
+  "render": "render_06_sala_botox.png",
+  "interno": true,
+  "fov": 82,
+  "eye": [
+   0.8,
+   1.65,
+   13.18
+  ],
+  "target": [
+   3.0,
+   0.7,
+   11.2
+  ],
+  "theta": -48.013,
+  "phi": 72.205,
+  "r": 3.109
+ },
+ {
+  "id": "corredor",
+  "rotulo": "Corredor",
+  "descricao": "Circulação principal",
+  "render": "render_07_corredor.png",
+  "interno": true,
+  "fov": 62,
+  "eye": [
+   4.9,
+   1.6,
+   16.1
+  ],
+  "target": [
+   4.9,
+   1.5,
+   7.0
+  ],
+  "theta": 0.0,
+  "phi": 89.37,
+  "r": 9.101
+ },
+ {
+  "id": "wc_acessivel",
+  "rotulo": "WC acessível",
+  "descricao": "Círculo de manobra Ø1,50 m",
+  "render": "render_08_banheiro_acessivel.png",
+  "interno": true,
+  "fov": 85,
+  "eye": [
+   7.75,
+   1.5,
+   13.85
+  ],
+  "target": [
+   9.2,
+   0.6,
+   15.6
+  ],
+  "theta": -140.356,
+  "phi": 68.396,
+  "r": 2.444
+ },
+ {
+  "id": "aerea",
+  "rotulo": "Vista aérea",
+  "descricao": "Fachada e volumetria",
+  "render": "render_01_vista_aerea_fachada.png",
+  "interno": false,
+  "fov": 42,
+  "eye": [
+   5.6,
+   23.5,
+   33.0
+  ],
+  "target": [
+   5.0,
+   0.0,
+   9.5
+  ],
+  "theta": 1.463,
+  "phi": 45.009,
+  "r": 33.239
+ },
+ {
+  "id": "superior",
+  "rotulo": "Vista superior",
+  "descricao": "Planta em perspectiva",
+  "render": "render_02_vista_superior.png",
+  "interno": false,
+  "fov": 34,
+  "eye": [
+   5.0,
+   37.0,
+   10.8
+  ],
+  "target": [
+   5.0,
+   0.0,
+   10.0
+  ],
+  "theta": 0.0,
+  "phi": 1.239,
+  "r": 37.009
+ }
+]

@@ -1,0 +1,16 @@
+newmtl madeira_escura
+Ka 0.216 0.151 0.089
+Kd 0.541 0.376 0.224
+Ks 0.12 0.12 0.12
+Ns 25
+d 1.0
+illum 2
+
+newmtl madeira
+Ka 0.290 0.216 0.143
+Kd 0.725 0.541 0.357
+Ks 0.12 0.12 0.12
+Ns 25
+d 1.0
+illum 2
+

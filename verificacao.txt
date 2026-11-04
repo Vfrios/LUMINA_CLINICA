@@ -1,0 +1,20 @@
+VERIFICAÇÃO AUTOMÁTICA - LÚMINA (script build_c.py)
+
+[OK] Ambientes: 16; nenhum fora dos limites internos 15..985 x 15..1985 cm; sobreposições entre ambientes: 0
+[OK] Portas: 14; janelas: 15
+[OK] Nenhum móvel/equipamento fora do seu ambiente, sem sobreposição entre peças (considerando altura) e sem colisão com a varredura das portas
+[OK] Contorno externo (face externa das paredes de 15 cm): 1000 x 2000 cm = 200.0 m²
+[OK] Paredes internas com 10 cm; externas com 15 cm; altura 300 cm
+[OK] Área líquida somada dos ambientes: 182.43 m²; restante (17.57 m²) = paredes/espessuras
+[OK] Banheiro acessível: círculo de manobra Ø1,50 m cabe dentro do ambiente
+[OK] Círculo Ø1,50 m livre de peças
+[OK] Circulação principal: 1.30 m de largura (dentro da faixa 1,20–1,50 m); ramal técnico: 1.20 m
+[OK] Portas internas 0,80 m; 0,90 m em Tecnologia, WC acessível e saída de serviço; principal 1,20 m (dupla)
+[OK] Todas as portas estão inseridas em trechos de parede contínuos
+[OK] 15 janelas nas paredes externas, dentro dos limites e sem cruzar portas/outras janelas (recepção, espera, consultório e salas de procedimento têm luz natural)
+[OK] .sh3d: Home.xml válido (XML bem formado); todas as referências de modelo/ícone/textura existem no arquivo; OBJ→MTL consistentes. Conteúdo: {'wall': 47, 'room': 16, 'doorOrWindow': 29, 'pieceOfFurniture': 112, 'light': 76}
+[OK] 90 arquivos OBJ com MTL no mesmo diretório (caminhos relativos, sem referência quebrada)
+[OK] Escala: todos os modelos autorados em cm reais (ex.: maca 190×65, balcão 240, sofá 240, porta 80/90/120, pé-direito 300)
+
+LIMITAÇÕES: o .sh3d NÃO foi aberto no Sweet Home 3D real (o programa não existe neste ambiente); a verificação é estrutural (XML, referências, geometria).
+Conformidade normativa (RDC 50, NBR 9050, instalações) NÃO foi verificada.

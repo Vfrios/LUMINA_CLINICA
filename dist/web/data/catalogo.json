@@ -1,0 +1,981 @@
+[
+ {
+  "id": "armario_alto_100",
+  "nome": "Armário alto 100 cm",
+  "categoria": "armarios",
+  "dimensoes_cm": [
+   100.0,
+   200.0,
+   47.6
+  ],
+  "glb": "modelos/armario_alto_100.glb"
+ },
+ {
+  "id": "armario_alto_120",
+  "nome": "Armário alto 120 cm",
+  "categoria": "armarios",
+  "dimensoes_cm": [
+   120.0,
+   200.0,
+   47.6
+  ],
+  "glb": "modelos/armario_alto_120.glb"
+ },
+ {
+  "id": "armario_alto_60",
+  "nome": "Armário alto 60 cm",
+  "categoria": "armarios",
+  "dimensoes_cm": [
+   60.0,
+   200.0,
+   47.6
+  ],
+  "glb": "modelos/armario_alto_60.glb"
+ },
+ {
+  "id": "armario_alto_80",
+  "nome": "Armário alto 80 cm",
+  "categoria": "armarios",
+  "dimensoes_cm": [
+   80.0,
+   200.0,
+   47.6
+  ],
+  "glb": "modelos/armario_alto_80.glb"
+ },
+ {
+  "id": "armario_baixo_240",
+  "nome": "Armário inferior de recepção 240",
+  "categoria": "armarios",
+  "dimensoes_cm": [
+   241.0,
+   75.0,
+   42.9
+  ],
+  "glb": "modelos/armario_baixo_240.glb"
+ },
+ {
+  "id": "bancada_160",
+  "nome": "Bancada 160x50",
+  "categoria": "armarios",
+  "dimensoes_cm": [
+   162.0,
+   98.0,
+   50.9
+  ],
+  "glb": "modelos/bancada_160.glb"
+ },
+ {
+  "id": "bancada_pia_200",
+  "nome": "Bancada com pia 200x60",
+  "categoria": "armarios",
+  "dimensoes_cm": [
+   202.0,
+   110.2,
+   60.9
+  ],
+  "glb": "modelos/bancada_pia_200.glb"
+ },
+ {
+  "id": "bancada_pia_220",
+  "nome": "Bancada com pia 220x60",
+  "categoria": "armarios",
+  "dimensoes_cm": [
+   222.0,
+   110.2,
+   60.9
+  ],
+  "glb": "modelos/bancada_pia_220.glb"
+ },
+ {
+  "id": "barra_apoio_70",
+  "nome": "Barra de apoio 70 cm",
+  "categoria": "banheiros",
+  "dimensoes_cm": [
+   70.0,
+   4.9,
+   4.8
+  ],
+  "glb": "modelos/barra_apoio_70.glb"
+ },
+ {
+  "id": "barra_apoio_80",
+  "nome": "Barra de apoio 80 cm",
+  "categoria": "banheiros",
+  "dimensoes_cm": [
+   80.0,
+   4.9,
+   4.8
+  ],
+  "glb": "modelos/barra_apoio_80.glb"
+ },
+ {
+  "id": "dispenser_papel",
+  "nome": "Dispenser de papel toalha",
+  "categoria": "banheiros",
+  "dimensoes_cm": [
+   28.0,
+   30.0,
+   11.3
+  ],
+  "glb": "modelos/dispenser_papel.glb"
+ },
+ {
+  "id": "dispenser_sabonete",
+  "nome": "Dispenser de sabonete",
+  "categoria": "banheiros",
+  "dimensoes_cm": [
+   10.0,
+   20.0,
+   11.5
+  ],
+  "glb": "modelos/dispenser_sabonete.glb"
+ },
+ {
+  "id": "lavatorio_60",
+  "nome": "Lavatório com gabinete 60x45",
+  "categoria": "banheiros",
+  "dimensoes_cm": [
+   62.8,
+   105.2,
+   45.9
+  ],
+  "glb": "modelos/lavatorio_60.glb"
+ },
+ {
+  "id": "lavatorio_pne",
+  "nome": "Lavatório suspenso acessível",
+  "categoria": "banheiros",
+  "dimensoes_cm": [
+   55.0,
+   64.0,
+   45.0
+  ],
+  "glb": "modelos/lavatorio_pne.glb"
+ },
+ {
+  "id": "vaso_sanitario",
+  "nome": "Vaso sanitário com caixa acoplada",
+  "categoria": "banheiros",
+  "dimensoes_cm": [
+   38.0,
+   73.5,
+   70.3
+  ],
+  "glb": "modelos/vaso_sanitario.glb"
+ },
+ {
+  "id": "cadeira_visita",
+  "nome": "Cadeira de visita",
+  "categoria": "consultorio",
+  "dimensoes_cm": [
+   46.0,
+   85.0,
+   46.0
+  ],
+  "glb": "modelos/cadeira_visita.glb"
+ },
+ {
+  "id": "mesa_escritorio_140",
+  "nome": "Mesa de consultório 140x70",
+  "categoria": "consultorio",
+  "dimensoes_cm": [
+   140.0,
+   75.0,
+   70.0
+  ],
+  "glb": "modelos/mesa_escritorio_140.glb"
+ },
+ {
+  "id": "armario_aereo_170",
+  "nome": "Armário aéreo 170",
+  "categoria": "copa",
+  "dimensoes_cm": [
+   170.0,
+   70.0,
+   37.6
+  ],
+  "glb": "modelos/armario_aereo_170.glb"
+ },
+ {
+  "id": "cadeira_copa",
+  "nome": "Cadeira da copa",
+  "categoria": "copa",
+  "dimensoes_cm": [
+   46.0,
+   85.0,
+   46.0
+  ],
+  "glb": "modelos/cadeira_copa.glb"
+ },
+ {
+  "id": "frigobar",
+  "nome": "Frigobar",
+  "categoria": "copa",
+  "dimensoes_cm": [
+   50.0,
+   85.0,
+   51.2
+  ],
+  "glb": "modelos/frigobar.glb"
+ },
+ {
+  "id": "mesa_copa_redonda",
+  "nome": "Mesa redonda Ø70",
+  "categoria": "copa",
+  "dimensoes_cm": [
+   70.0,
+   75.0,
+   70.0
+  ],
+  "glb": "modelos/mesa_copa_redonda.glb"
+ },
+ {
+  "id": "microondas",
+  "nome": "Micro-ondas",
+  "categoria": "copa",
+  "dimensoes_cm": [
+   46.0,
+   27.0,
+   35.3
+  ],
+  "glb": "modelos/microondas.glb"
+ },
+ {
+  "id": "espelho_100x90",
+  "nome": "Espelho 100x90",
+  "categoria": "decoracao",
+  "dimensoes_cm": [
+   100.0,
+   90.0,
+   3.4
+  ],
+  "glb": "modelos/espelho_100x90.glb"
+ },
+ {
+  "id": "espelho_120x90",
+  "nome": "Espelho 120x90",
+  "categoria": "decoracao",
+  "dimensoes_cm": [
+   120.0,
+   90.0,
+   3.4
+  ],
+  "glb": "modelos/espelho_120x90.glb"
+ },
+ {
+  "id": "espelho_140x90",
+  "nome": "Espelho 140x90",
+  "categoria": "decoracao",
+  "dimensoes_cm": [
+   140.0,
+   90.0,
+   3.4
+  ],
+  "glb": "modelos/espelho_140x90.glb"
+ },
+ {
+  "id": "espelho_60x80",
+  "nome": "Espelho 60x80",
+  "categoria": "decoracao",
+  "dimensoes_cm": [
+   60.0,
+   80.0,
+   3.4
+  ],
+  "glb": "modelos/espelho_60x80.glb"
+ },
+ {
+  "id": "espelho_redondo_100",
+  "nome": "Espelho redondo Ø100 moldura champagne",
+  "categoria": "decoracao",
+  "dimensoes_cm": [
+   100.0,
+   100.0,
+   3.5
+  ],
+  "glb": "modelos/espelho_redondo_100.glb"
+ },
+ {
+  "id": "lixeira",
+  "nome": "Lixeira com tampa",
+  "categoria": "decoracao",
+  "dimensoes_cm": [
+   25.0,
+   32.0,
+   24.4
+  ],
+  "glb": "modelos/lixeira.glb"
+ },
+ {
+  "id": "painel_ripado_150x260",
+  "nome": "Painel ripado de madeira 150x260",
+  "categoria": "decoracao",
+  "dimensoes_cm": [
+   150.0,
+   260.0,
+   4.0
+  ],
+  "glb": "modelos/painel_ripado_150x260.glb"
+ },
+ {
+  "id": "painel_ripado_400x260",
+  "nome": "Painel ripado de madeira 400x260",
+  "categoria": "decoracao",
+  "dimensoes_cm": [
+   400.0,
+   260.0,
+   4.0
+  ],
+  "glb": "modelos/painel_ripado_400x260.glb"
+ },
+ {
+  "id": "planta_grande",
+  "nome": "Planta ornamental em vaso terracota",
+  "categoria": "decoracao",
+  "dimensoes_cm": [
+   38.0,
+   164.0,
+   35.5
+  ],
+  "glb": "modelos/planta_grande.glb"
+ },
+ {
+  "id": "planta_pequena",
+  "nome": "Planta pequena",
+  "categoria": "decoracao",
+  "dimensoes_cm": [
+   22.0,
+   36.0,
+   18.0
+  ],
+  "glb": "modelos/planta_pequena.glb"
+ },
+ {
+  "id": "quadro_abstrato",
+  "nome": "Quadro abstrato 80x60",
+  "categoria": "decoracao",
+  "dimensoes_cm": [
+   80.0,
+   60.0,
+   3.8
+  ],
+  "glb": "modelos/quadro_abstrato.glb"
+ },
+ {
+  "id": "vaso_decor",
+  "nome": "Vaso decorativo com ramos",
+  "categoria": "decoracao",
+  "dimensoes_cm": [
+   17.7,
+   63.0,
+   12.0
+  ],
+  "glb": "modelos/vaso_decor.glb"
+ },
+ {
+  "id": "caixas_empilhadas",
+  "nome": "Caixas de insumos",
+  "categoria": "deposito",
+  "dimensoes_cm": [
+   62.0,
+   48.0,
+   38.0
+  ],
+  "glb": "modelos/caixas_empilhadas.glb"
+ },
+ {
+  "id": "estante_deposito_160",
+  "nome": "Estante deposito 160",
+  "categoria": "deposito",
+  "dimensoes_cm": [
+   160.0,
+   200.0,
+   40.0
+  ],
+  "glb": "modelos/estante_deposito_160.glb"
+ },
+ {
+  "id": "estante_deposito_360",
+  "nome": "Estante deposito 360",
+  "categoria": "deposito",
+  "dimensoes_cm": [
+   360.0,
+   200.0,
+   40.0
+  ],
+  "glb": "modelos/estante_deposito_360.glb"
+ },
+ {
+  "id": "balde_e_rodo",
+  "nome": "Balde e rodo",
+  "categoria": "dml",
+  "dimensoes_cm": [
+   30.0,
+   129.0,
+   30.0
+  ],
+  "glb": "modelos/balde_e_rodo.glb"
+ },
+ {
+  "id": "prateleiras_dml",
+  "nome": "Prateleiras dml",
+  "categoria": "dml",
+  "dimensoes_cm": [
+   180.0,
+   200.0,
+   35.0
+  ],
+  "glb": "modelos/prateleiras_dml.glb"
+ },
+ {
+  "id": "tanque_dml",
+  "nome": "Tanque/pia de serviço",
+  "categoria": "dml",
+  "dimensoes_cm": [
+   60.0,
+   108.2,
+   50.0
+  ],
+  "glb": "modelos/tanque_dml.glb"
+ },
+ {
+  "id": "cart_limpeza_pele",
+  "nome": "Carrinho com equipamentos de limpeza de pele",
+  "categoria": "equipamentos",
+  "dimensoes_cm": [
+   60.0,
+   101.0,
+   45.0
+  ],
+  "glb": "modelos/cart_limpeza_pele.glb"
+ },
+ {
+  "id": "conjunto_materiais",
+  "nome": "Materiais de apoio (frascos e bandeja)",
+  "categoria": "equipamentos",
+  "dimensoes_cm": [
+   32.0,
+   13.5,
+   22.0
+  ],
+  "glb": "modelos/conjunto_materiais.glb"
+ },
+ {
+  "id": "impressora",
+  "nome": "Impressora",
+  "categoria": "equipamentos",
+  "dimensoes_cm": [
+   40.0,
+   24.0,
+   34.2
+  ],
+  "glb": "modelos/impressora.glb"
+ },
+ {
+  "id": "lupa_luminaria",
+  "nome": "Lupa com luz de bancada",
+  "categoria": "equipamentos",
+  "dimensoes_cm": [
+   40.0,
+   122.0,
+   46.6
+  ],
+  "glb": "modelos/lupa_luminaria.glb"
+ },
+ {
+  "id": "monitor",
+  "nome": "Monitor 24\"",
+  "categoria": "equipamentos",
+  "dimensoes_cm": [
+   55.0,
+   47.0,
+   24.0
+  ],
+  "glb": "modelos/monitor.glb"
+ },
+ {
+  "id": "teclado",
+  "nome": "Teclado",
+  "categoria": "equipamentos",
+  "dimensoes_cm": [
+   42.0,
+   2.0,
+   14.0
+  ],
+  "glb": "modelos/teclado.glb"
+ },
+ {
+  "id": "vaporizador_ozonio",
+  "nome": "Vaporizador/ozônio para limpeza de pele",
+  "categoria": "equipamentos",
+  "dimensoes_cm": [
+   52.0,
+   113.3,
+   54.5
+  ],
+  "glb": "modelos/vaporizador_ozonio.glb"
+ },
+ {
+  "id": "abajur",
+  "nome": "Abajur",
+  "categoria": "espera",
+  "dimensoes_cm": [
+   26.0,
+   40.0,
+   25.3
+  ],
+  "glb": "modelos/abajur.glb"
+ },
+ {
+  "id": "mesa_centro_redonda",
+  "nome": "Mesa de centro redonda Ø80",
+  "categoria": "espera",
+  "dimensoes_cm": [
+   80.0,
+   38.0,
+   80.0
+  ],
+  "glb": "modelos/mesa_centro_redonda.glb"
+ },
+ {
+  "id": "mesa_lateral",
+  "nome": "Mesa lateral",
+  "categoria": "espera",
+  "dimensoes_cm": [
+   45.0,
+   53.0,
+   45.0
+  ],
+  "glb": "modelos/mesa_lateral.glb"
+ },
+ {
+  "id": "poltrona_marsala",
+  "nome": "Poltrona marsala",
+  "categoria": "espera",
+  "dimensoes_cm": [
+   80.0,
+   78.0,
+   80.0
+  ],
+  "glb": "modelos/poltrona_marsala.glb"
+ },
+ {
+  "id": "sofa_4_lugares",
+  "nome": "Sofá 4 lugares (240x90)",
+  "categoria": "espera",
+  "dimensoes_cm": [
+   240.0,
+   75.0,
+   90.0
+  ],
+  "glb": "modelos/sofa_4_lugares.glb"
+ },
+ {
+  "id": "armario_vestiario_200",
+  "nome": "Armário tipo vestiário 5 portas",
+  "categoria": "funcionarios",
+  "dimensoes_cm": [
+   200.0,
+   190.0,
+   47.2
+  ],
+  "glb": "modelos/armario_vestiario_200.glb"
+ },
+ {
+  "id": "sofa_2_lugares",
+  "nome": "Sofá 2 lugares (descanso)",
+  "categoria": "funcionarios",
+  "dimensoes_cm": [
+   150.0,
+   64.0,
+   80.0
+  ],
+  "glb": "modelos/sofa_2_lugares.glb"
+ },
+ {
+  "id": "fita_led_400",
+  "nome": "Fita LED indireta 400",
+  "categoria": "iluminacao",
+  "dimensoes_cm": [
+   400.0,
+   1.5,
+   1.5
+  ],
+  "glb": "modelos/fita_led_400.glb"
+ },
+ {
+  "id": "fita_led_h",
+  "nome": "Fita LED horizontal 240",
+  "categoria": "iluminacao",
+  "dimensoes_cm": [
+   240.0,
+   1.5,
+   1.5
+  ],
+  "glb": "modelos/fita_led_h.glb"
+ },
+ {
+  "id": "fita_led_v",
+  "nome": "Fita LED vertical 250",
+  "categoria": "iluminacao",
+  "dimensoes_cm": [
+   1.5,
+   250.0,
+   1.5
+  ],
+  "glb": "modelos/fita_led_v.glb"
+ },
+ {
+  "id": "painel_led_60",
+  "nome": "Painel LED técnico 60x60",
+  "categoria": "iluminacao",
+  "dimensoes_cm": [
+   60.0,
+   3.0,
+   60.0
+  ],
+  "glb": "modelos/painel_led_60.glb"
+ },
+ {
+  "id": "pendente_dourado",
+  "nome": "Pendente decorativo dourado",
+  "categoria": "iluminacao",
+  "dimensoes_cm": [
+   26.0,
+   62.0,
+   26.0
+  ],
+  "glb": "modelos/pendente_dourado.glb"
+ },
+ {
+  "id": "spot_direcionavel",
+  "nome": "Spot direcionável",
+  "categoria": "iluminacao",
+  "dimensoes_cm": [
+   12.0,
+   14.0,
+   12.0
+  ],
+  "glb": "modelos/spot_direcionavel.glb"
+ },
+ {
+  "id": "spot_embutido",
+  "nome": "Spot LED embutido",
+  "categoria": "iluminacao",
+  "dimensoes_cm": [
+   13.0,
+   1.2,
+   12.7
+  ],
+  "glb": "modelos/spot_embutido.glb"
+ },
+ {
+  "id": "lavieen",
+  "nome": "Lavieen laser (modelo ilustrativo)",
+  "categoria": "lavieen",
+  "dimensoes_cm": [
+   46.0,
+   122.7,
+   60.3
+  ],
+  "glb": "modelos/lavieen.glb"
+ },
+ {
+  "id": "carrinho_auxiliar",
+  "nome": "Carrinho auxiliar 3 prateleiras",
+  "categoria": "maca",
+  "dimensoes_cm": [
+   55.0,
+   89.0,
+   40.0
+  ],
+  "glb": "modelos/carrinho_auxiliar.glb"
+ },
+ {
+  "id": "maca_profissional",
+  "nome": "Maca estética profissional (190x65)",
+  "categoria": "maca",
+  "dimensoes_cm": [
+   189.2,
+   75.0,
+   65.0
+  ],
+  "glb": "modelos/maca_profissional.glb"
+ },
+ {
+  "id": "mocho",
+  "nome": "Mocho giratório",
+  "categoria": "maca",
+  "dimensoes_cm": [
+   52.0,
+   57.0,
+   52.0
+  ],
+  "glb": "modelos/mocho.glb"
+ },
+ {
+  "id": "janela_100x100",
+  "nome": "Janela 100x100",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   100.0,
+   100.0,
+   15.0
+  ],
+  "glb": "modelos/janela_100x100.glb"
+ },
+ {
+  "id": "janela_100x140",
+  "nome": "Janela 100x140",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   100.0,
+   140.0,
+   15.0
+  ],
+  "glb": "modelos/janela_100x140.glb"
+ },
+ {
+  "id": "janela_110x120",
+  "nome": "Janela 110x120",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   110.0,
+   120.0,
+   15.0
+  ],
+  "glb": "modelos/janela_110x120.glb"
+ },
+ {
+  "id": "janela_140x120",
+  "nome": "Janela 140x120",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   140.0,
+   120.0,
+   15.0
+  ],
+  "glb": "modelos/janela_140x120.glb"
+ },
+ {
+  "id": "janela_140x130",
+  "nome": "Janela 140x130",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   140.0,
+   130.0,
+   15.0
+  ],
+  "glb": "modelos/janela_140x130.glb"
+ },
+ {
+  "id": "janela_140x140",
+  "nome": "Janela 140x140",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   140.0,
+   140.0,
+   15.0
+  ],
+  "glb": "modelos/janela_140x140.glb"
+ },
+ {
+  "id": "janela_160x130",
+  "nome": "Janela 160x130",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   160.0,
+   130.0,
+   15.0
+  ],
+  "glb": "modelos/janela_160x130.glb"
+ },
+ {
+  "id": "janela_160x150",
+  "nome": "Janela 160x150",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   160.0,
+   150.0,
+   15.0
+  ],
+  "glb": "modelos/janela_160x150.glb"
+ },
+ {
+  "id": "janela_250x170",
+  "nome": "Janela 250x170",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   250.0,
+   170.0,
+   15.0
+  ],
+  "glb": "modelos/janela_250x170.glb"
+ },
+ {
+  "id": "janela_300x150",
+  "nome": "Janela 300x150",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   300.0,
+   150.0,
+   15.0
+  ],
+  "glb": "modelos/janela_300x150.glb"
+ },
+ {
+  "id": "janela_60x50",
+  "nome": "Janela 60x50",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   60.0,
+   50.0,
+   15.0
+  ],
+  "glb": "modelos/janela_60x50.glb"
+ },
+ {
+  "id": "janela_80x60",
+  "nome": "Janela 80x60",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   80.0,
+   60.0,
+   15.0
+  ],
+  "glb": "modelos/janela_80x60.glb"
+ },
+ {
+  "id": "porta_80",
+  "nome": "Porta interna 80x210",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   80.0,
+   210.0,
+   10.0
+  ],
+  "glb": "modelos/porta_80.glb"
+ },
+ {
+  "id": "porta_90",
+  "nome": "Porta 90x210",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   90.0,
+   210.0,
+   10.0
+  ],
+  "glb": "modelos/porta_90.glb"
+ },
+ {
+  "id": "porta_principal_120",
+  "nome": "Porta principal dupla 120x220 vidro",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   120.0,
+   220.0,
+   15.0
+  ],
+  "glb": "modelos/porta_principal_120.glb"
+ },
+ {
+  "id": "porta_servico_90",
+  "nome": "Porta de serviço 90x210",
+  "categoria": "portas",
+  "dimensoes_cm": [
+   90.0,
+   210.0,
+   15.0
+  ],
+  "glb": "modelos/porta_servico_90.glb"
+ },
+ {
+  "id": "balcao_recepcao",
+  "nome": "Balcão de recepção 240 (marsala + mármore)",
+  "categoria": "recepcao",
+  "dimensoes_cm": [
+   240.0,
+   105.0,
+   71.0
+  ],
+  "glb": "modelos/balcao_recepcao.glb"
+ },
+ {
+  "id": "cadeira_atendimento",
+  "nome": "Cadeira giratória de atendimento",
+  "categoria": "recepcao",
+  "dimensoes_cm": [
+   52.0,
+   86.0,
+   49.5
+  ],
+  "glb": "modelos/cadeira_atendimento.glb"
+ },
+ {
+  "id": "letreiro_lumina",
+  "nome": "Letras 3D LÚMINA em dourado fosco",
+  "categoria": "recepcao",
+  "dimensoes_cm": [
+   189.1,
+   43.0,
+   3.0
+  ],
+  "glb": "modelos/letreiro_lumina.glb"
+ },
+ {
+  "id": "painel_logo",
+  "nome": "Painel do logotipo (marsala + ripado + LED)",
+  "categoria": "recepcao",
+  "dimensoes_cm": [
+   300.0,
+   256.0,
+   6.4
+  ],
+  "glb": "modelos/painel_logo.glb"
+ },
+ {
+  "id": "poltrona_drenagem",
+  "nome": "Poltrona nude (drenagem)",
+  "categoria": "salas",
+  "dimensoes_cm": [
+   80.0,
+   78.0,
+   80.0
+  ],
+  "glb": "modelos/poltrona_drenagem.glb"
+ },
+ {
+  "id": "quadro_eletrico",
+  "nome": "Quadro elétrico",
+  "categoria": "tecnica",
+  "dimensoes_cm": [
+   40.0,
+   60.0,
+   12.4
+  ],
+  "glb": "modelos/quadro_eletrico.glb"
+ },
+ {
+  "id": "rack_ti",
+  "nome": "Rack de TI/rede",
+  "categoria": "tecnica",
+  "dimensoes_cm": [
+   55.0,
+   180.0,
+   61.0
+  ],
+  "glb": "modelos/rack_ti.glb"
+ },
+ {
+  "id": "ultraformer",
+  "nome": "Ultraformer (modelo ilustrativo)",
+  "categoria": "ultraformer",
+  "dimensoes_cm": [
+   59.2,
+   132.6,
+   56.0
+  ],
+  "glb": "modelos/ultraformer.glb"
+ }
+]

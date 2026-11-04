@@ -1,0 +1,16 @@
+newmtl champagne
+Ka 0.355 0.325 0.254
+Kd 0.886 0.812 0.635
+Ks 0.12 0.12 0.12
+Ns 25
+d 1.0
+illum 2
+
+newmtl espelho
+Ka 0.314 0.336 0.345
+Kd 0.784 0.839 0.863
+Ks 0.12 0.12 0.12
+Ns 25
+d 0.85
+illum 2
+

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>LÚMINA · Clínica de Estética e Biomedicina</title>
+  <meta name="description" content="Passeio 3D conceitual pela clínica LÚMINA (10 × 20 m, 16 ambientes).">
+  <meta name="theme-color" content="#7A2E3A">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topo">
+    <h1><span class="marca">LÚMINA</span> <span class="ponto">·</span> <span class="sub">Clínica de Estética e Biomedicina</span></h1>
+    <nav class="links">
+      <a href="three/index.html" title="Câmera livre e modo caminhada (WASD)">Caminhar (Three.js)</a>
+      <a href="catalogo.html" title="Peças 3D individuais (.glb)">Catálogo de peças</a>
+    </nav>
+  </header>
+
+  <main class="layout">
+    <section class="palco" aria-label="Visualizador 3D da clínica">
+      <!-- model-viewer ≥ 3.x: o <script> é carregado por js/app.js (local em vendor/ ou CDN com versão fixa) -->
+      <model-viewer id="mv"
+        src="modelos/predio_completo.glb"
+        alt="Modelo 3D da clínica LÚMINA: 16 ambientes em 10 × 20 m"
+        camera-controls touch-action="pan-y"
+        auto-rotate auto-rotate-delay="1500" rotation-per-second="5deg"
+        environment-image="neutral" shadow-intensity="0.7" shadow-softness="1" exposure="1.05"
+        interpolation-decay="90"
+        camera-orbit="-15deg 52deg 36m" camera-target="5m 0.5m 9.5m" field-of-view="42deg"
+        min-camera-orbit="auto 0deg 0.05m" max-camera-orbit="auto 180deg 90m"
+        min-field-of-view="10deg" max-field-of-view="110deg">
+        <div slot="progress-bar"></div>
+      </model-viewer>
+      <div id="carregando" class="sobre"><div class="spin"></div><p id="carregando-txt">Carregando a clínica…</p><div class="barra"><i id="barra-i"></i></div></div>
+      <div id="erro" class="sobre erro" hidden></div>
+      <div id="rotulo-vista" class="rotulo" aria-live="polite"></div>
+    </section>
+
+    <aside class="painel" id="painel">
+      <h2>Vistas <small>(= renders 01–08)</small></h2>
+      <div class="grade" id="vistas"></div>
+
+      <h2>Ambiente <small>(pavimento térreo — único)</small></h2>
+      <select id="sel-ambiente" aria-label="Escolher ambiente"><option value="">Todos os ambientes</option></select>
+      <div id="info-ambiente" class="cartao" hidden></div>
+
+      <h2>Opções</h2>
+      <label class="opt"><input type="checkbox" id="opt-teto" checked> Mostrar teto</label>
+      <label class="opt"><input type="checkbox" id="opt-giro" checked> Girar automaticamente</label>
+      <label class="opt"><input type="checkbox" id="opt-sombra" checked> Sombra no chão</label>
+      <button id="btn-reset" class="sec">↺ Visão geral</button>
+      <button id="btn-instalar" class="sec" hidden>⤓ Instalar aplicativo</button>
+      <p class="dica">Arraste para girar · role/pince para zoom · botão direito/dois dedos para mover. Nas vistas internas a câmera fica na altura dos olhos (≈ 1,65 m).</p>
+    </aside>
+  </main>
+
+  <footer class="rodape">
+    <p><strong>Projeto conceitual.</strong> Não atesta conformidade com RDC 50/ANVISA, NBR 9050, instalações ou legislação local; validação por profissional habilitado é necessária.</p>
+    <p class="mini">Ultraformer e Lavieen são volumes ilustrativos, sem relação com as marcas.</p>
+  </footer>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>Caminhar pela clínica · LÚMINA (Three.js)</title>
+  <script>
+    if (location.pathname.endsWith('/three')) {
+      history.replaceState(null, '', location.pathname + '/' + location.search + location.hash);
+    }
+  </script>
+  <meta name="theme-color" content="#7A2E3A">
+  <link rel="icon" href="../icons/icon-192.png">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- Versões fixas. export_web.py --vendor troca estes endereços pela cópia local em ../vendor/three/ -->
+  <!--IMPORTMAP--><script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script><!--/IMPORTMAP-->
+  <style>
+    :root{--areia:#E3D3B5;--creme:#F7F1E6;--marsala:#7A2E3A;--marsala-esc:#5E2029;--dourado:#B8975A;--texto:#3B2A24;--serif:"Cormorant Garamond",Georgia,serif;--sans:"Jost","Segoe UI",system-ui,sans-serif}
+    *{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--areia);color:var(--texto);font-family:var(--sans);overflow:hidden}
+    body{display:flex;flex-direction:column}
+    header{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:center;justify-content:space-between;padding:.55rem 1rem;border-bottom:1px solid var(--dourado);background:var(--creme)}
+    h1{margin:0;font:600 clamp(1rem,2.2vw,1.4rem) var(--serif);color:var(--marsala)}h1 b{letter-spacing:.2em}
+    .barra{display:flex;flex-wrap:wrap;gap:.35rem}
+    .sensibilidade{display:flex;align-items:center;gap:.4rem;font-size:.82rem;white-space:nowrap}
+    .sensibilidade input{width:90px;accent-color:var(--marsala)}
+    .sensibilidade output{min-width:3em;font-variant-numeric:tabular-nums}
+    button,a.b{font:inherit;font-size:.82rem;cursor:pointer;background:var(--areia);border:1px solid var(--dourado);color:var(--texto);border-radius:99px;padding:.3rem .75rem;text-decoration:none}
+    button:hover,a.b:hover,button:focus-visible{background:#EAD9BE}
+    button[aria-pressed="true"]{background:var(--marsala);color:var(--creme);border-color:var(--marsala)}
+    #palco{position:relative;flex:1;min-height:0}canvas{display:block;width:100%;height:100%;touch-action:none}
+    #hud{position:absolute;left:.8rem;top:.8rem;background:rgba(247,241,230,.92);border:1px solid var(--dourado);border-radius:10px;padding:.4rem .7rem;font-size:.82rem;max-width:min(92vw,420px);pointer-events:none}
+    #hud b{font:600 1.05rem var(--serif);color:var(--marsala)}
+    #sobre{position:absolute;inset:0;display:flex;flex-direction:column;gap:.6rem;align-items:center;justify-content:center;background:rgba(227,211,181,.92);text-align:center;padding:1rem;transition:opacity .4s}
+    #sobre.some{opacity:0;pointer-events:none}
+    .joy{position:absolute;bottom:1.2rem;width:110px;height:110px;border-radius:50%;border:2px solid rgba(122,46,58,.45);background:rgba(247,241,230,.35);display:none}
+    .joy i{position:absolute;left:50%;top:50%;width:46px;height:46px;margin:-23px;border-radius:50%;background:rgba(122,46,58,.55)}
+    body.toque .joy{display:block}
+    footer{padding:.4rem 1rem;background:var(--marsala-esc);color:#EAD9C6;font-size:.72rem;line-height:1.35;border-top:2px solid var(--dourado)}
+    [hidden]{display:none!important}
+  </style>
+</head>
+<body>
+  <header>
+    <h1><b>LÚMINA</b> · Clínica de Estética e Biomedicina <span style="font-weight:500;font-size:.8em">— modo livre / caminhada</span></h1>
+    <div class="barra" id="barra-modos">
+      <button id="m-orbita" aria-pressed="true" type="button">Órbita</button>
+      <button id="m-andar" aria-pressed="false" type="button">Caminhar (WASD)</button>
+      <button id="b-teto" aria-pressed="true" type="button">Teto</button>
+      <button id="b-colisao" aria-pressed="true" type="button">Colisão</button>
+      <label class="sensibilidade" for="sensibilidade">Sensibilidade
+        <input id="sensibilidade" type="range" min="0.1" max="1.5" step="0.05" value="0.25">
+        <output id="sensibilidade-valor" for="sensibilidade">0,25×</output>
+      </label>
+      <a class="b" href="../index.html">← model-viewer</a>
+    </div>
+  </header>
+  <div class="barra" id="barra-vistas" style="padding:.4rem 1rem;border-bottom:1px solid var(--dourado);background:var(--creme)"></div>
+  <div id="palco">
+    <div id="hud"><b id="hud-ambiente">—</b><br><span id="hud-dica">Arraste para girar · roda do mouse = zoom</span></div>
+    <div id="sobre"><div>Carregando a clínica…</div><div id="sobre-pct">0%</div></div>
+    <div class="joy" id="joy-mov" style="left:1rem"><i></i></div>
+    <div class="joy" id="joy-olhar" style="right:1rem"><i></i></div>
+  </div>
+  <footer><strong>Projeto conceitual.</strong> Não atesta conformidade com RDC 50/ANVISA, NBR 9050, instalações ou legislação local; validação por profissional habilitado é necessária.</footer>
+  <script>
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = new URL('walk.js', location.href);
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>

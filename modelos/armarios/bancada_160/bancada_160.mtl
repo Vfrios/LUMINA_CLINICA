@@ -1,0 +1,32 @@
+newmtl madeira
+Ka 0.290 0.216 0.143
+Kd 0.725 0.541 0.357
+Ks 0.12 0.12 0.12
+Ns 25
+d 1.0
+illum 2
+
+newmtl branco_quente
+Ka 0.384 0.373 0.356
+Kd 0.961 0.933 0.890
+Ks 0.12 0.12 0.12
+Ns 25
+d 1.0
+illum 2
+
+newmtl champagne
+Ka 0.355 0.325 0.254
+Kd 0.886 0.812 0.635
+Ks 0.12 0.12 0.12
+Ns 25
+d 1.0
+illum 2
+
+newmtl marmore
+Ka 0.365 0.355 0.336
+Kd 0.914 0.886 0.839
+Ks 0.12 0.12 0.12
+Ns 25
+d 1.0
+illum 2
+

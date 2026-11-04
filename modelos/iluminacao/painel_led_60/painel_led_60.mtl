@@ -1,0 +1,16 @@
+newmtl branco
+Ka 0.383 0.383 0.380
+Kd 0.957 0.957 0.949
+Ks 0.12 0.12 0.12
+Ns 25
+d 1.0
+illum 2
+
+newmtl led_neutro
+Ka 0.400 0.386 0.351
+Kd 1.000 0.965 0.878
+Ks 0.12 0.12 0.12
+Ns 25
+d 1.0
+illum 2
+

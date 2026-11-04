@@ -1,0 +1,16 @@
+newmtl inox
+Ka 0.315 0.315 0.311
+Kd 0.788 0.788 0.776
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+
+newmtl marsala_tecido
+Ka 0.173 0.061 0.080
+Kd 0.431 0.153 0.200
+Ks 0.12 0.12 0.12
+Ns 25
+Tr 0.000
+illum 2
+

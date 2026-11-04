@@ -1,0 +1,3 @@
+Requer Python 3 com numpy, pillow, matplotlib.
+Ordem: python3 build_a.py ; python3 build_b.py ; python3 build_c.py ; python3 build_d.py
+(ajuste o caminho OUT em build_a.py)
