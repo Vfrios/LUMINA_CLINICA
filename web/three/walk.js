@@ -41,6 +41,9 @@ const orbit = new OrbitControls(camera, renderer.domElement);
 orbit.enableDamping = true; orbit.dampingFactor = 0.12; orbit.maxPolarAngle = Math.PI; orbit.minDistance = 0.5; orbit.maxDistance = 80;
 let modo = 'orbita', anim = null, bloqueado = false;
 const walk = { x: 0, z: 0, yaw: 0, pitch: 0 };
+const cameraWalk = new THREE.Vector3();
+const cameraWalkAlvo = new THREE.Vector3();
+let cameraYaw = 0, cameraPitch = 0;
 const eixo = { f: 0, l: 0, giroY: 0, giroX: 0 };
 const teclas = new Set();
 let colisao = true;
@@ -76,6 +79,7 @@ function modoOrbita() {
 function modoAndar(x = col.inicio.pos[0], z = col.inicio.pos[1], yaw = (col.inicio.yaw_graus * Math.PI) / 180) {
   modo = 'andar'; orbit.enabled = false; anim = null; marcarModo();
   walk.x = x; walk.z = z; walk.yaw = yaw; walk.pitch = 0; camera.fov = 70; camera.updateProjectionMatrix();
+  cameraWalk.set(x, col.altura_olhos, z); cameraYaw = yaw; cameraPitch = 0;
   $('#hud-dica').textContent = document.body.classList.contains('toque')
     ? 'Joystick esquerdo = andar · direito = olhar'
     : 'Clique na cena p/ capturar o mouse · WASD/setas = andar · Shift = correr · Esc = soltar · C = colisão · T = teto';
@@ -97,15 +101,22 @@ function irParaVista(v, permitirAndar = true) {
 views.forEach((v) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = v.rotulo; b.onclick = () => irParaVista(v); $('#barra-vistas').appendChild(b); });
 { const v0 = views.find((v) => v.id === 'aerea'); camera.position.set(...v0.eye); orbit.target.set(...v0.target); camera.fov = v0.fov; camera.updateProjectionMatrix(); camera.lookAt(orbit.target); }
 
-// ---------- colisão: círculo (aprox. quadrado) × AABBs de parede (sem vãos de porta) e móveis grandes
+// ---------- colisão: círculo × AABBs de parede (sem vãos de porta) e móveis grandes
 const caixas = () => (colisao ? col.paredes.concat(col.moveis) : []);
 function bate(x, z) {
   const r = col.raio, [bx0, bz0, bx1, bz1] = col.limites;
   if (x < bx0 + r || x > bx1 - r || z < bz0 + r || z > bz1 - r) return true;      // não sai do prédio
-  for (const [x0, z0, x1, z1] of caixas()) if (x > x0 - r && x < x1 + r && z > z0 - r && z < z1 + r) return true;
+  for (const [x0, z0, x1, z1] of caixas()) {
+    const px = THREE.MathUtils.clamp(x, x0, x1), pz = THREE.MathUtils.clamp(z, z0, z1);
+    if ((x - px) ** 2 + (z - pz) ** 2 < r ** 2) return true;
+  }
   return false;
 }
-function mover(dx, dz) {                                                       // desliza nas paredes (eixo a eixo)
+function mover(dx, dz) {
+  if (!bate(walk.x + dx, walk.z + dz)) {
+    walk.x += dx; walk.z += dz;
+    return;
+  }
   if (!bate(walk.x + dx, walk.z)) walk.x += dx;
   if (!bate(walk.x, walk.z + dz)) walk.z += dz;
 }
@@ -153,12 +164,17 @@ renderer.setAnimationLoop((agora) => {
       const vel = (teclas.has('shift') ? 3.2 : 1.4) * dt * Math.min(1, n);      // m/s (correr = Shift)
       const fx = -Math.sin(walk.yaw), fz = -Math.cos(walk.yaw), rx = Math.cos(walk.yaw), rz = -Math.sin(walk.yaw);   // yaw 0 olha para -z
       const dx = ((fx * f + rx * l) / n) * vel, dz = ((fz * f + rz * l) / n) * vel;
-      const passos = Math.max(1, Math.ceil(Math.hypot(dx, dz) / 0.08));          // passos curtos: não atravessa parede fina (10 cm)
+      const passos = Math.max(1, Math.ceil(Math.hypot(dx, dz) / 0.02));
       for (let i = 0; i < passos; i++) mover(dx / passos, dz / passos);
     }
-    camera.position.set(walk.x, col.altura_olhos, walk.z); camera.rotation.set(walk.pitch, walk.yaw, 0, 'YXZ');
+    const suavizacao = 1 - Math.exp(-dt * 24);
+    cameraWalkAlvo.set(walk.x, col.altura_olhos, walk.z);
+    cameraWalk.lerp(cameraWalkAlvo, suavizacao);
+    cameraYaw += Math.atan2(Math.sin(walk.yaw - cameraYaw), Math.cos(walk.yaw - cameraYaw)) * suavizacao;
+    cameraPitch += (walk.pitch - cameraPitch) * suavizacao;
+    camera.position.copy(cameraWalk); camera.rotation.set(cameraPitch, cameraYaw, 0, 'YXZ');
     const r = ambienteEm(walk.x, walk.z); ambiente.textContent = r ? r.nome : 'Circulação / vão';
   } else { orbit.update(); const r = ambienteEm(orbit.target.x, orbit.target.z); ambiente.textContent = r ? r.nome : 'Clínica LÚMINA'; }
   renderer.render(scene, camera);
 });
-window.__lumina = { camera, orbit, walk, bate, modoAndar, modoOrbita };         // depuração no console
+window.__lumina = { camera, orbit, walk, cameraWalk, bate, modoAndar, modoOrbita }; // depuração no console

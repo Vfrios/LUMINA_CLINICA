@@ -1,5 +1,5 @@
 /* LÚMINA · service worker (PWA offline). export_web.py preenche versão e lista de pré-cache. */
-const VERSAO = /*VERSAO*/"8f2b651e"/*FIM*/;
+const VERSAO = /*VERSAO*/"66fe627d"/*FIM*/;
 const PRECACHE = /*PRECACHE*/["./", "catalogo.html", "css/style.css", "data/catalogo.json", "data/collision.json", "data/rooms.json", "data/views.json", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "index.html", "js/app.js", "js/mv-loader.js", "manifest.webmanifest", "modelos/predio_completo.glb", "three/index.html", "three/walk.js"]/*FIM*/;
 const NOME = 'lumina-' + VERSAO, EXECUCAO = 'lumina-rt';
 
