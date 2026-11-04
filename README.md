@@ -13,6 +13,9 @@ Para exportar apenas o site, rode `python baixar_texturas.py` antes de `python e
 `./build.sh --vendor` baixa `model-viewer` e `three` (versões fixas) para `dist/web/vendor/` → funciona offline.
 Sem `--vendor` o site carrega essas bibliotecas de CDN (internet na 1ª visita; depois o service worker guarda cache).
 
+## Publicar no Render
+Este projeto é um site estático; use **New > Static Site**, não Web Service/Python. O arquivo `render.yaml` define a instalação das dependências, a execução do `build.sh` e a pasta publicada (`dist/web`). Não há Start Command nem plano de computação para configurar.
+
 ## Estrutura
 ```
 codigo_fonte/   scripts originais (+ write_obj_web em lib_geom, OUT por LUMINA_OUT, RENDER_CAMS em build_b)

@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: lumina-clinica
+    runtime: static
+    buildCommand: python -m pip install numpy pillow matplotlib && bash build.sh
+    staticPublishPath: dist/web
+    autoDeploy: true
