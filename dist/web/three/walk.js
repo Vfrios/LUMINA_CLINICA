@@ -9,8 +9,8 @@ const $ = (s) => document.querySelector(s);
 const palco = $('#palco');
 
 // ---------- renderer / cena
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
 palco.prepend(renderer.domElement);
@@ -38,7 +38,7 @@ $('#sobre').classList.add('some');
 
 // ---------- modos
 const orbit = new OrbitControls(camera, renderer.domElement);
-orbit.enableDamping = true; orbit.dampingFactor = 0.12; orbit.maxPolarAngle = Math.PI; orbit.minDistance = 0.5; orbit.maxDistance = 80;
+orbit.enableDamping = true; orbit.dampingFactor = 0.08; orbit.maxPolarAngle = Math.PI; orbit.minDistance = 0.5; orbit.maxDistance = 80;
 let modo = 'orbita', anim = null, bloqueado = false;
 const walk = { x: 0, z: 0, yaw: 0, pitch: 0 };
 const cameraWalk = new THREE.Vector3();
@@ -80,6 +80,7 @@ function modoAndar(x = col.inicio.pos[0], z = col.inicio.pos[1], yaw = (col.inic
   modo = 'andar'; orbit.enabled = false; anim = null; marcarModo();
   walk.x = x; walk.z = z; walk.yaw = yaw; walk.pitch = 0; camera.fov = 70; camera.updateProjectionMatrix();
   cameraWalk.set(x, col.altura_olhos, z); cameraYaw = yaw; cameraPitch = 0;
+  camera.position.copy(cameraWalk); camera.rotation.set(cameraPitch, cameraYaw, 0, 'YXZ');
   $('#hud-dica').textContent = document.body.classList.contains('toque')
     ? 'Joystick esquerdo = andar · direito = olhar'
     : 'Clique na cena p/ capturar o mouse · WASD/setas = andar · Shift = correr · Esc = soltar · C = colisão · T = teto';
@@ -168,13 +169,14 @@ renderer.setAnimationLoop((agora) => {
       for (let i = 0; i < passos; i++) mover(dx / passos, dz / passos);
     }
     const suavizacao = 1 - Math.exp(-dt * 24);
+    const suavizacaoGiro = 1 - Math.exp(-dt * 14);
     cameraWalkAlvo.set(walk.x, col.altura_olhos, walk.z);
     cameraWalk.lerp(cameraWalkAlvo, suavizacao);
-    cameraYaw += Math.atan2(Math.sin(walk.yaw - cameraYaw), Math.cos(walk.yaw - cameraYaw)) * suavizacao;
-    cameraPitch += (walk.pitch - cameraPitch) * suavizacao;
+    cameraYaw += Math.atan2(Math.sin(walk.yaw - cameraYaw), Math.cos(walk.yaw - cameraYaw)) * suavizacaoGiro;
+    cameraPitch += (walk.pitch - cameraPitch) * suavizacaoGiro;
     camera.position.copy(cameraWalk); camera.rotation.set(cameraPitch, cameraYaw, 0, 'YXZ');
     const r = ambienteEm(walk.x, walk.z); ambiente.textContent = r ? r.nome : 'Circulação / vão';
   } else { orbit.update(); const r = ambienteEm(orbit.target.x, orbit.target.z); ambiente.textContent = r ? r.nome : 'Clínica LÚMINA'; }
   renderer.render(scene, camera);
 });
-window.__lumina = { camera, orbit, walk, cameraWalk, bate, modoAndar, modoOrbita }; // depuração no console
+window.__lumina = { camera, orbit, walk, cameraWalk, renderer, bate, modoAndar, modoOrbita }; // depuração no console
