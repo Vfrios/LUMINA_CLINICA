@@ -51,7 +51,8 @@ function visaoGeral() {
 }
 
 function montarUI() {
-  views.forEach((v) => {
+  const vistasDoModelViewer = new Set(['recepcao', 'espera', 'tecnologia', 'botox', 'corredor', 'wc_acessivel', 'aerea', 'superior']);
+  views.filter((v) => vistasDoModelViewer.has(v.id)).forEach((v) => {
     const b = document.createElement('button');
     b.type = 'button'; b.dataset.id = v.id; b.setAttribute('aria-pressed', 'false');
     b.innerHTML = `${v.rotulo}<small>${v.descricao}</small>`;

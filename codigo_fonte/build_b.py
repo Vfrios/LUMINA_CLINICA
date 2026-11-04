@@ -108,7 +108,7 @@ def make_planta_files():
     plt.close('all'); return tot
 
 # ================= RENDERS =================
-# Câmeras dos 8 renders (fonte única: também usadas pelo web app via export_web.py)
+# Câmeras dos renders (fonte única: também usadas pelo web app via export_web.py)
 # nome: (olho (x, y_cima, z) cm, alvo (x, y, z) cm, fov vertical °, tamanho px, com_teto)
 RENDER_CAMS={
  'render_01_vista_aerea_fachada':((560,2350,3300),(500,0,950),42,(1600,1100),False),
@@ -119,6 +119,10 @@ RENDER_CAMS={
  'render_06_sala_botox':((80,165,1318),(300,70,1120),82,(1600,1000),True),
  'render_07_corredor':((490,160,1610),(490,150,700),62,(1600,1000),True),
  'render_08_banheiro_acessivel':((775,150,1385),(920,60,1560),85,(1400,1000),True),
+ 'render_09_sala_ti':((615,165,55),(840,80,95),82,(1400,1000),True),
+ 'render_10_sala_peeling':((80,165,950),(300,70,800),82,(1600,1000),True),
+ 'render_11_sala_drenagem':((80,165,590),(300,70,440),82,(1600,1000),True),
+ 'render_12_banheiro_clientes':((640,155,1405),(690,65,1515),82,(1400,1000),True),
 }
 def make_renders():
     P0=scene.full_scene(ceilings=False,ground=False)

@@ -9,7 +9,7 @@ build_a.py / build_b.py e produz, SEM remodelar nada:
   dist/web/modelos/<peca>.glb          1 GLB por peça de models.REG (89 peças)
   dist/web/modelos/predio_completo.glb prédio inteiro (scene.full_scene(ceilings=True))
   dist/web/texturas/*.png              texturas originais (referência)
-  dist/web/data/*.json                 câmeras (= renders 01..08), ambientes, colisão, catálogo
+  dist/web/data/*.json                 câmeras (= renders 01..12), ambientes, colisão, catálogo
   dist/web/{index.html, three/, ...}   cópia de web/ + manifest/service worker/ícones PWA
   dist/verificacao_web.txt             relatório de validação dos GLB
   dist/LUMINA_WEB.zip                  projeto inteiro (zip final)
@@ -252,12 +252,16 @@ def predio_glb(destino, textura_piso=True):
 ROTULOS = {  # render -> (id, rótulo, descrição)
     'render_03_recepcao': ('recepcao', 'Recepção', 'Balcão, painel e letreiro LÚMINA'),
     'render_04_sala_espera': ('espera', 'Sala de espera', 'Sofá, poltronas e painel ripado'),
-    'render_05_sala_tecnologia': ('tecnologia', 'Tecnologia', 'Ultraformer / Lavieen (ilustrativos)'),
+    'render_05_sala_tecnologia': ('tecnologia', 'Sala de tecnologia de estética', 'Ultraformer / Lavieen (ilustrativos)'),
     'render_06_sala_botox': ('botox', 'Sala de Botox', 'Procedimentos faciais'),
     'render_07_corredor': ('corredor', 'Corredor', 'Circulação principal'),
     'render_08_banheiro_acessivel': ('wc_acessivel', 'WC acessível', 'Círculo de manobra Ø1,50 m'),
     'render_01_vista_aerea_fachada': ('aerea', 'Vista aérea', 'Fachada e volumetria'),
     'render_02_vista_superior': ('superior', 'Vista superior', 'Planta em perspectiva'),
+    'render_09_sala_ti': ('tecnica', 'Tecnologia', 'Sala de TI / área técnica'),
+    'render_10_sala_peeling': ('peeling', 'Sala de peeling', 'Peeling e limpeza de pele'),
+    'render_11_sala_drenagem': ('drenagem', 'Sala de drenagem', 'Procedimentos de drenagem'),
+    'render_12_banheiro_clientes': ('banheiro', 'Banheiro', 'Banheiro de clientes'),
 }
 def orbita(eye, alvo):
     d = np.array(eye, float) - np.array(alvo, float); r = float(np.linalg.norm(d))
@@ -454,7 +458,7 @@ def main():
         th, ph = math.radians(v['theta']), math.radians(v['phi'])
         e = np.array(v['target']) + v['r'] * np.array([math.sin(ph) * math.sin(th), math.cos(ph), math.sin(ph) * math.cos(th)])
         if np.abs(e - np.array(v['eye'])).max() > 0.01: erros.append(f'orbit inconsistente em {v["id"]}')
-    rel.append(f'[OK] {len(views)} vistas = câmeras de build_b.RENDER_CAMS (render_01..08); órbita (θ, φ, r) conferida por ida e volta com a posição do olho')
+    rel.append(f'[OK] {len(views)} vistas = câmeras de build_b.RENDER_CAMS (render_01..12); órbita (θ, φ, r) conferida por ida e volta com a posição do olho')
     rel.append(f'[OK] {len(rooms)} ambientes (exatamente os de layout.ROOMS); colisão: {len(col["paredes"])} trechos de parede (vãos de porta livres), {len(col["moveis"])} móveis')
     dd = os.path.join(stage, 'data')
     os.makedirs(dd, exist_ok=True)

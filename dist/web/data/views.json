@@ -43,7 +43,7 @@
  },
  {
   "id": "tecnologia",
-  "rotulo": "Tecnologia",
+  "rotulo": "Sala de tecnologia de estética",
   "descricao": "Ultraformer / Lavieen (ilustrativos)",
   "render": "render_05_sala_tecnologia.png",
   "interno": true,
@@ -166,5 +166,89 @@
   "theta": 0.0,
   "phi": 1.239,
   "r": 37.009
+ },
+ {
+  "id": "tecnica",
+  "rotulo": "Tecnologia",
+  "descricao": "Sala de TI / área técnica",
+  "render": "render_09_sala_ti.png",
+  "interno": true,
+  "fov": 82,
+  "eye": [
+   6.15,
+   1.65,
+   0.55
+  ],
+  "target": [
+   8.4,
+   0.8,
+   0.95
+  ],
+  "theta": -100.081,
+  "phi": 69.598,
+  "r": 2.438
+ },
+ {
+  "id": "peeling",
+  "rotulo": "Sala de peeling",
+  "descricao": "Peeling e limpeza de pele",
+  "render": "render_10_sala_peeling.png",
+  "interno": true,
+  "fov": 82,
+  "eye": [
+   0.8,
+   1.65,
+   9.5
+  ],
+  "target": [
+   3.0,
+   0.7,
+   8.0
+  ],
+  "theta": -55.713,
+  "phi": 70.365,
+  "r": 2.827
+ },
+ {
+  "id": "drenagem",
+  "rotulo": "Sala de drenagem",
+  "descricao": "Procedimentos de drenagem",
+  "render": "render_11_sala_drenagem.png",
+  "interno": true,
+  "fov": 82,
+  "eye": [
+   0.8,
+   1.65,
+   5.9
+  ],
+  "target": [
+   3.0,
+   0.7,
+   4.4
+  ],
+  "theta": -55.713,
+  "phi": 70.365,
+  "r": 2.827
+ },
+ {
+  "id": "banheiro",
+  "rotulo": "Banheiro",
+  "descricao": "Banheiro de clientes",
+  "render": "render_12_banheiro_clientes.png",
+  "interno": true,
+  "fov": 82,
+  "eye": [
+   6.4,
+   1.55,
+   14.05
+  ],
+  "target": [
+   6.9,
+   0.65,
+   15.15
+  ],
+  "theta": -155.556,
+  "phi": 53.32,
+  "r": 1.507
  }
 ]

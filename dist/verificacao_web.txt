@@ -7,7 +7,7 @@ VERIFICAÇÃO DO PACOTE WEB — LÚMINA (export_web.py)
 [OK] Materiais com alphaMode BLEND (de ALPHA): espelho, vidro
 [OK] 16 materiais piso_<ambiente> presentes (realce por ambiente no web app)
 [OK] Nós do glTF: pisos, paredes, teto, esquadrias, mobiliario, LUMINA_Clinica
-[OK] 8 vistas = câmeras de build_b.RENDER_CAMS (render_01..08); órbita (θ, φ, r) conferida por ida e volta com a posição do olho
+[OK] 12 vistas = câmeras de build_b.RENDER_CAMS (render_01..12); órbita (θ, φ, r) conferida por ida e volta com a posição do olho
 [OK] 16 ambientes (exatamente os de layout.ROOMS); colisão: 61 trechos de parede (vãos de porta livres), 72 móveis
 [OK] dist/web montado: 16 arquivos no pré-cache do service worker (versão 4ab45581); vendor local: não (usa CDN com versões fixas)
 
