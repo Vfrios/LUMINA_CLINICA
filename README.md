@@ -6,9 +6,10 @@ Planta 2D, modelos 3D autorais e agora um **visualizador navegável** (web/PWA),
 ## Como rodar
 ```bash
 pip install numpy pillow matplotlib      # únicas dependências (Node só p/ servir/empacotar)
-./build.sh                               # ou: make   (roda build_a→b→c→d + export_web.py)
+./build.sh                               # baixa mapas PBR, roda build_a→b→c→d e export_web.py
 npx serve dist/web                       # abra o endereço mostrado (não use file://)
 ```
+Para exportar apenas o site, rode `python baixar_texturas.py` antes de `python export_web.py` (ou `make web`).
 `./build.sh --vendor` baixa `model-viewer` e `three` (versões fixas) para `dist/web/vendor/` → funciona offline.
 Sem `--vendor` o site carrega essas bibliotecas de CDN (internet na 1ª visita; depois o service worker guarda cache).
 
@@ -24,7 +25,8 @@ electron/       casca desktop opcional
 ```
 
 ## O que mudou na exportação
-- `lib_geom.write_obj_web`: metros, normais `vn` por face (`f v//vn`), faces degeneradas descartadas, `Tr = 1 − alpha`, `usemtl`/`mtllib` relativos. O `write_obj` original (cm) segue alimentando o `.sh3d`.
+- `lib_geom.write_obj_web`: metros, UVs planares por face (`vt`), normais `vn` por face (`f v/vt/vn`), faces degeneradas descartadas, `Tr = 1 − alpha`, `usemtl`/`mtllib` relativos. O `write_obj` original (cm) segue alimentando o `.sh3d`.
+- `baixar_texturas.py`: baixa mapas diffuse, normal OpenGL e roughness 2K da Poly Haven para mármore, madeira, porcelanato e linho; o exportador embute os mapas PBR nos GLBs.
 - Conversão OBJ→GLB em **Python puro** (numpy + Pillow; sem Blender/obj2gltf): cores em linear, `ALPHA` → `alphaMode: BLEND`, LEDs emissivos, `predio_completo.glb` (≈1,7 MB) a partir de `scene.full_scene(ceilings=True)`.
 - Pisos viram 1 quad por ambiente com textura embutida (material `piso_<id>`), o que permite o realce do ambiente. Teto é face única (some na vista aérea).
 - Se o GLB passar de 20 MB: `python3 export_web.py --otimizar meshopt` (usa `@gltf-transform/cli`; ou Draco).

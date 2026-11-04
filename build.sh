@@ -8,5 +8,6 @@ cd "$(dirname "$0")"
 PY="${PYTHON:-python3}"
 ( cd codigo_fonte \
   && "$PY" build_a.py && "$PY" build_b.py && "$PY" build_c.py && "$PY" build_d.py )
+"$PY" baixar_texturas.py
 "$PY" export_web.py "$@"
 echo "OK → dist/web/index.html  (teste: npx serve dist/web)"

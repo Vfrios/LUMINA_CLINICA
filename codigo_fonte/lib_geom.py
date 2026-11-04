@@ -19,23 +19,25 @@ MATS = {
 ALPHA = {'vidro':0.28, 'espelho':0.85}
 
 class Mesh:
-    def __init__(s): s.p=[]
-    def _q(s,m,pts):
+    def __init__(s): s.p=[]; s.uv_scales=[]
+    def _q(s,m,pts,texture_scale=None):
         q=[pts[0]]
         for a in pts[1:]:
             if max(abs(a[i]-q[-1][i]) for i in range(3))>1e-9: q.append(a)
         if len(q)>2 and max(abs(q[0][i]-q[-1][i]) for i in range(3))<=1e-9: q.pop()
-        if len(q)>=3: s.p.append((m,q))
-    def bb(s,x0,y0,z0,x1,y1,z1,m):
+        if len(q)>=3: s.p.append((m,q)); s.uv_scales.append(texture_scale)
+    def bb(s,x0,y0,z0,x1,y1,z1,m,escala_textura=None):
         for pts in (
          [(x0,y0,z1),(x1,y0,z1),(x1,y1,z1),(x0,y1,z1)],
          [(x1,y0,z0),(x0,y0,z0),(x0,y1,z0),(x1,y1,z0)],
          [(x1,y0,z1),(x1,y0,z0),(x1,y1,z0),(x1,y1,z1)],
          [(x0,y0,z0),(x0,y0,z1),(x0,y1,z1),(x0,y1,z0)],
          [(x0,y1,z1),(x1,y1,z1),(x1,y1,z0),(x0,y1,z0)],
-         [(x0,y0,z0),(x1,y0,z0),(x1,y0,z1),(x0,y0,z1)]): s._q(m,pts)
+         [(x0,y0,z0),(x1,y0,z0),(x1,y0,z1),(x0,y0,z1)]): s._q(m,pts,escala_textura)
         return s
-    def b(s,cx,y0,cz,sx,sy,sz,m): return s.bb(cx-sx/2,y0,cz-sz/2,cx+sx/2,y0+sy,cz+sz/2,m)
+    def b(s,cx,y0,cz,sx,sy,sz,m,escala_textura=None):
+        """Cria uma caixa; escala_textura (cm ou (u,v)) define o tamanho do tile PBR."""
+        return s.bb(cx-sx/2,y0,cz-sz/2,cx+sx/2,y0+sy,cz+sz/2,m,escala_textura)
     def cyl(s,cx,cy,cz,r,h,m,axis='y',n=16,r2=None):
         r2=r if r2 is None else r2
         P=lambda a,rr,y:(rr*math.cos(a),y,rr*math.sin(a))
@@ -78,7 +80,8 @@ class Mesh:
         Ry=np.array([[math.cos(b),0,math.sin(b)],[0,1,0],[-math.sin(b),0,math.cos(b)]])
         Rz=np.array([[math.cos(c),-math.sin(c),0],[math.sin(c),math.cos(c),0],[0,0,1]])
         R=Rz@Ry@Rx; pv=np.array([px,py,pz]); tv=np.array([px+tx,py+ty,pz+tz])
-        for m,vs in o.p: s.p.append((m,[tuple(R@(np.array(v)-pv)+tv) for v in vs]))
+        for (m,vs),uv_scale in zip(o.p,o.uv_scales):
+            s.p.append((m,[tuple(R@(np.array(v)-pv)+tv) for v in vs])); s.uv_scales.append(uv_scale)
         return s
     def bbox(s):
         a=np.array([v for _,vs in s.p for v in vs]); return a.min(0),a.max(0)
@@ -118,16 +121,32 @@ def newell(vs):
     ln=float(np.linalg.norm(n))
     return ((n/ln) if ln>1e-9 else None), ln/2
 
-def write_obj_web(polys, folder, name, unit=0.01):
+def uv_planar(vs,nrm,texture_scale=None):
+    """Projeção planar por face; escala opcional define o tamanho do tile em cm."""
+    eixo=int(np.argmax(np.abs(nrm)))
+    eixos=((2,1),(0,2),(0,1))[eixo]
+    coords=np.asarray([[v[eixos[0]],v[eixos[1]]] for v in vs],dtype=float)
+    lo=coords.min(0); span=coords.max(0)-lo
+    span[span<1e-9]=1.0
+    if texture_scale is None:
+        uv=(coords-lo)/span
+    else:
+        tile=np.asarray(texture_scale if isinstance(texture_scale,(tuple,list)) else (texture_scale,texture_scale),dtype=float)
+        if tile.shape != (2,) or np.any(tile<=0): raise ValueError('escala_textura deve ser positiva (cm ou par u,v)')
+        uv=(coords-lo)/tile
+    return uv
+
+def write_obj_web(polys, folder, name, unit=0.01, texture_scales=None):
     """OBJ/MTL compatível com navegador:
        - vértices em METROS (cm * unit, unit=0.01);
-       - normais (vn) recalculadas por face, faces no formato 'f v//vn';
+       - UVs (vt) planares normalizadas por face, com escala opcional;
+       - normais (vn) recalculadas por face, faces no formato 'f v/vt/vn';
        - faces degeneradas descartadas;
        - MTL com 'Tr = 1 - alpha' (em vez de 'd'), 'Ke' para materiais luminosos;
        - 'usemtl' por material e 'mtllib' relativo (mesmo diretório).
        Retorna (faces escritas, faces descartadas)."""
     os.makedirs(folder,exist_ok=True)
-    V={}; vl=[]; N={}; nl=[]; groups={}; dropped=0
+    V={}; vl=[]; N={}; nl=[]; tl=[]; groups={}; dropped=0
     def vid(v):
         k=(round(v[0]*unit,4),round(v[1]*unit,4),round(v[2]*unit,4))
         if k not in V: V[k]=len(vl)+1; vl.append(k)
@@ -136,22 +155,28 @@ def write_obj_web(polys, folder, name, unit=0.01):
         k=(round(float(n[0]),4),round(float(n[1]),4),round(float(n[2]),4))
         if k not in N: N[k]=len(nl)+1; nl.append(k)
         return N[k]
-    for m,vs in polys:
+    for pi,(m,vs) in enumerate(polys):
         nrm,area=newell(vs)
         if nrm is None or area<1e-4: dropped+=1; continue   # área em cm²
         ni=nid(nrm); ids=[vid(v) for v in vs]
+        scale=texture_scales[pi] if texture_scales is not None and pi<len(texture_scales) else None
+        uv_ids=[]
+        for uv in uv_planar(vs,nrm,scale):
+            tl.append(tuple(uv)); uv_ids.append(len(tl))
         for i in range(1,len(ids)-1):
             tri=(ids[0],ids[i],ids[i+1])
             if len(set(tri))<3: dropped+=1; continue
-            groups.setdefault(m,[]).append(tri+(ni,))
+            groups.setdefault(m,[]).append((tri[0],uv_ids[0],tri[1],uv_ids[i],tri[2],uv_ids[i+1],ni))
     nf=0
     with open(os.path.join(folder,name+'.obj'),'w') as f:
         f.write(f'# LUMINA (web) - {name}\n# unidade: metros | normais por face | y para cima\nmtllib {name}.mtl\no {name}\n')
         for v in vl: f.write('v %.4f %.4f %.4f\n'%v)
+        for uv in tl: f.write('vt %.6f %.6f\n'%uv)
         for n in nl: f.write('vn %.4f %.4f %.4f\n'%n)
         for m,fs in groups.items():
             f.write(f'usemtl {m}\n')
-            for a,b,c,n in fs: f.write(f'f {a}//{n} {b}//{n} {c}//{n}\n'); nf+=1
+            for a,ua,b,ub,c,uc,n in fs:
+                f.write(f'f {a}/{ua}/{n} {b}/{ub}/{n} {c}/{uc}/{n}\n'); nf+=1
     EMIT={'led','led_neutro'}
     with open(os.path.join(folder,name+'.mtl'),'w') as f:
         for m in groups:

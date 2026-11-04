@@ -34,24 +34,25 @@ def carrinho(W=55,D=40,H=85):
 reg('carrinho_auxiliar','maca','Carrinho auxiliar 3 prateleiras',carrinho())
 
 def armario_alto(W,Hh=200):
-    m=Mesh(); m.b(0,0,0,W,Hh,45,'madeira'); n=max(1,round(W/50)); dw=W/n
+    m=Mesh(); m.b(0,0,0,W,Hh,45,'madeira',escala_textura=100); n=max(1,round(W/50)); dw=W/n
     for i in range(n):
         x=-W/2+dw*(i+.5); m.b(x,4,22.5+0.75,dw-1.5,Hh-8,1.5,'branco_quente'); m.b(x+(dw/2-6)*(1 if i%2==0 else -1),Hh/2-15,24.5,1.6,30,1.2,'champagne')
     return m
 for w in(60,80,100,120): reg(f'armario_alto_{w}','armarios',f'Armário alto {w} cm',armario_alto(w))
 
 def armario_baixo(W,Hh=75,D=40):
-    m=Mesh(); m.b(0,0,0,W,Hh-3,D,'madeira'); m.b(0,Hh-3,0,W+1,3,D+1,'marmore'); n=max(2,round(W/60)); dw=W/n
+    m=Mesh(); m.b(0,0,0,W,Hh-3,D,'madeira',escala_textura=100)
+    m.b(0,Hh-3,0,W+1,3,D+1,'marmore',escala_textura=100); n=max(2,round(W/60)); dw=W/n
     for i in range(n):
         x=-W/2+dw*(i+.5); m.b(x,4,D/2+0.75,dw-1.5,Hh-10,1.5,'nude'); m.b(x+(dw/2-6),Hh-20,D/2+1.8,1.2,14,1.2,'champagne')
     return m
 reg('armario_baixo_240','armarios','Armário inferior de recepção 240',armario_baixo(240))
 
 def bancada(W,D=60,Hh=90,pia=False,name=None):
-    m=Mesh(); m.b(0,0,0,W,Hh-4,D-2,'madeira'); n=max(2,round(W/60)); dw=W/n
+    m=Mesh(); m.b(0,0,0,W,Hh-4,D-2,'madeira',escala_textura=100); n=max(2,round(W/60)); dw=W/n
     for i in range(n):
         x=-W/2+dw*(i+.5); m.b(x,4,D/2-1+0.75,dw-1.5,Hh-12,1.5,'branco_quente'); m.b(x+(dw/2-6),Hh-22,D/2+0.3,1.2,12,1.2,'champagne')
-    m.b(0,Hh-4,0,W+2,4,D,'marmore'); m.b(0,Hh,-D/2+1,W,8,2,'marmore')
+    m.b(0,Hh-4,0,W+2,4,D,'marmore',escala_textura=100); m.b(0,Hh,-D/2+1,W,8,2,'marmore',escala_textura=100)
     if pia:
         x=W*0.18; m.b(x,Hh-3.5,2,42,0.8,34,'inox'); m.cy0(x,Hh,-D/2+9,1.5,20,'champagne',n=8); m.b(x,Hh+18,-D/2+16,2.2,2.2,14,'champagne')
     return m

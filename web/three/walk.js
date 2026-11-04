@@ -47,13 +47,15 @@ function setHudDica(t) { if (SEM_HUD) return; if (t !== hudDicaAtual) { hudDicaA
 const renderer = new THREE.WebGLRenderer({ antialias: ANTIALIAS, powerPreference: 'high-performance' });
 renderer.setPixelRatio(PIXEL_RATIO);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.9;
 palco.prepend(renderer.domElement);
 const canvasEl = renderer.domElement;
 const scene = new THREE.Scene(); scene.background = new THREE.Color(0xE3D3B5);
 const pmrem = new THREE.PMREMGenerator(renderer);
 scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-scene.add(new THREE.HemisphereLight(0xffffff, 0xd9c7a8, 0.45));
+pmrem.dispose();
+scene.add(new THREE.HemisphereLight(0xffffff, 0xb8b8b8, 0.55));
 const camera = new THREE.PerspectiveCamera(60, 1, 0.05, 200);
 
 // GPU em uso: se aparecer SwiftShader/llvmpipe/Software, o WebGL está rodando na CPU
@@ -83,7 +85,12 @@ const [views, rooms, col] = await Promise.all(
 // ---------- modelo
 let predio = null, teto = null;
 await new Promise((ok, falha) => new GLTFLoader().load('../modelos/predio_completo.glb',
-  (g) => { predio = g.scene; teto = predio.getObjectByName('teto'); scene.add(predio); ok(); },
+  (g) => {
+    predio = g.scene;
+    teto = predio.getObjectByName('teto');
+    scene.add(predio);
+    ok();
+  },
   (e) => {
     if (!e.total) return;
     const p = Math.round((e.loaded / e.total) * 100);

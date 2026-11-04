@@ -103,7 +103,8 @@ def model_export():
         cat_dir={'maca':'maca','recepcao':'recepcao','ultraformer':'ultraformer','lavieen':'lavieen','armarios':'armarios','decoracao':'decoracao'}.get(d['cat'],d['cat'])
         folder=f'{OUT}/modelos/{cat_dir}/{name}'
         G.write_obj(polys,folder,name)
-        G.write_obj_web(polys,f'{OUT}/modelos_web/{cat_dir}/{name}',name)   # OBJ em metros + normais + Tr (para web)
+        G.write_obj_web(polys,f'{OUT}/modelos_web/{cat_dir}/{name}',name,
+                        texture_scales=d['mesh'].uv_scales)   # OBJ em metros + UVs/normais/Tr
         d['dims']=tuple(round(float(v),1) for v in dm); d['folder']=folder; d['catdir']=cat_dir
         ic=icon_for(name,polys,dm); ic.save(f'{folder}/{name}_icone.png'); icons[name]=ic
         d['polys']=polys

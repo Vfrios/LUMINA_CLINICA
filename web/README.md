@@ -3,7 +3,8 @@
 Esta pasta é a **fonte**. O site publicável é `dist/web/` (gerado por `export_web.py`, que copia esta pasta, adiciona `modelos/`, `data/`, `texturas/` e preenche `sw.js`).
 
 ```bash
-python3 export_web.py            # gera dist/web
+python3 baixar_texturas.py       # baixa diffuse, normal e roughness 2K
+python3 export_web.py            # gera dist/web (ou: make web)
 npx serve dist/web               # http://localhost:3000
 ```
 - `index.html` + `js/app.js`: `<model-viewer>` com 8 vistas (= renders 01–08), seletor de ambiente com realce do piso, teto liga/desliga.

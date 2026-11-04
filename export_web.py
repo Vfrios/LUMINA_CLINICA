@@ -46,10 +46,22 @@ def srgb2lin(c):
     return [(x / 12.92 if x <= 0.04045 else ((x + 0.055) / 1.055) ** 2.4) for x in c]
 
 # (metallic, roughness) — o que não estiver aqui é fosco (0, 0.8). Cores/alpha continuam vindo de MATS/ALPHA.
-PBR = {'inox': (0.70, 0.40), 'dourado': (0.55, 0.45), 'champagne': (0.45, 0.50), 'espelho': (0.80, 0.12),
-       'vidro': (0.0, 0.05), 'ceramica': (0.0, 0.35), 'marmore': (0.0, 0.30), 'led': (0.0, 0.5), 'led_neutro': (0.0, 0.5),
-       'preto': (0.0, 0.50), 'esquadria': (0.1, 0.50), 'teto': (0.0, 0.95)}
+PBR_FACTORS = {'madeira': (0.0, 0.8), 'madeira_escura': (0.0, 0.8), 'madeira_porta': (0.0, 0.8),
+               'inox': (0.9, 0.35), 'dourado': (0.9, 0.35), 'champagne': (0.9, 0.35), 'esquadria': (0.9, 0.35),
+               'espelho': (1.0, 0.0), 'vidro': (0.0, 0.05), 'ceramica': (0.0, 0.5), 'marmore': (0.0, 0.5),
+               'led': (0.0, 0.5), 'led_neutro': (0.0, 0.5), 'preto': (0.0, 0.50), 'teto': (0.0, 0.95)}
+PBR = {
+    'marmore': {'diffuse': 'marble_diffuse.jpg', 'normal': 'marble_normal.jpg', 'roughness': 'marble_roughness.jpg'},
+    'madeira': {'diffuse': 'wood_planks_diffuse.jpg', 'normal': 'wood_planks_normal.jpg', 'roughness': 'wood_planks_roughness.jpg'},
+    'ceramica': {'diffuse': 'porcelain_diffuse.jpg', 'normal': 'porcelain_normal.jpg', 'roughness': 'porcelain_roughness.jpg'},
+    'porcelain': {'diffuse': 'porcelain_diffuse.jpg', 'normal': 'porcelain_normal.jpg', 'roughness': 'porcelain_roughness.jpg'},
+    'tecido_bege': {'diffuse': 'fabric_linen_diffuse.jpg', 'normal': 'fabric_linen_normal.jpg', 'roughness': 'fabric_linen_roughness.jpg'},
+    'estofado_nude': {'diffuse': 'fabric_linen_diffuse.jpg', 'normal': 'fabric_linen_normal.jpg', 'roughness': 'fabric_linen_roughness.jpg'},
+    'marsala_tecido': {'diffuse': 'fabric_linen_diffuse.jpg', 'normal': 'fabric_linen_normal.jpg', 'roughness': 'fabric_linen_roughness.jpg'},
+}
+PBR.update({nome: PBR['madeira'] for nome in ('madeira_escura', 'madeira_porta')})
 EMISSIVOS = {'led', 'led_neutro'}                               # materiais "luminosos"
+PBR_IMAGE_CACHE = {}
 
 # ---------------------------------------------------------------- escritor GLB (glTF 2.0 binário)
 class GLB:
@@ -57,6 +69,7 @@ class GLB:
     def __init__(s):
         s.buf = bytearray(); s.views = []; s.accs = []; s.mats = []; s._mat = {}
         s.meshes = []; s.nodes = []; s.images = []; s.texs = []; s._tex = {}
+        s.extensions_used = set()
         s.samplers = [{"magFilter": 9729, "minFilter": 9987, "wrapS": 10497, "wrapT": 10497}]  # repete + mipmap
 
     def _view(s, data, target=None):
@@ -71,23 +84,73 @@ class GLB:
         if minmax: a["min"] = [float(x) for x in arr.min(0)]; a["max"] = [float(x) for x in arr.max(0)]
         s.accs.append(a); return len(s.accs) - 1
 
-    def textura(s, caminho_png, qualidade=90):
-        """Embute a imagem (como JPEG, bem menor que PNG para mármore/porcelanato) e devolve o índice da textura."""
-        if caminho_png in s._tex: return s._tex[caminho_png]
-        bio = io.BytesIO(); Image.open(caminho_png).convert('RGB').save(bio, 'JPEG', quality=qualidade, optimize=True)
-        bv = s._view(bio.getvalue())
-        s.images.append({"name": os.path.splitext(os.path.basename(caminho_png))[0], "bufferView": bv, "mimeType": "image/jpeg"})
+    def _imagem(s, chave, nome, dados, mime):
+        if chave in s._tex: return s._tex[chave]
+        bv = s._view(dados)
+        s.images.append({"name": nome, "bufferView": bv, "mimeType": mime})
         s.texs.append({"sampler": 0, "source": len(s.images) - 1})
-        s._tex[caminho_png] = len(s.texs) - 1; return s._tex[caminho_png]
+        s._tex[chave] = len(s.texs) - 1
+        return s._tex[chave]
+
+    def textura(s, diffuse=None, normal=None, roughness=None):
+        """Embute os mapas PBR e retorna seus índices glTF."""
+        resultado = {}
+        if diffuse:
+            chave = ('diffuse', diffuse)
+            if chave not in PBR_IMAGE_CACHE:
+                with Image.open(diffuse) as imagem:
+                    bio = io.BytesIO()
+                    imagem.convert('RGB').save(bio, 'JPEG', quality=88, optimize=True)
+                PBR_IMAGE_CACHE[chave] = (bio.getvalue(), 'image/jpeg')
+            resultado['diffuse'] = s._imagem(('diffuse', diffuse), os.path.splitext(os.path.basename(diffuse))[0],
+                                               *PBR_IMAGE_CACHE[chave])
+        if normal:
+            chave = ('normal', normal)
+            if chave not in PBR_IMAGE_CACHE:
+                with Image.open(normal) as imagem:
+                    bio = io.BytesIO()
+                    imagem.convert('RGB').save(bio, 'JPEG', quality=90, subsampling=0, optimize=True)
+                PBR_IMAGE_CACHE[chave] = (bio.getvalue(), 'image/jpeg')
+            resultado['normal'] = s._imagem(('normal', normal), os.path.splitext(os.path.basename(normal))[0],
+                                              *PBR_IMAGE_CACHE[chave])
+        if roughness:
+            chave = ('roughness', roughness)
+            if chave not in PBR_IMAGE_CACHE:
+                with Image.open(roughness) as imagem:
+                    rough = imagem.convert('L')
+                    branco = Image.new('L', rough.size, 255)
+                    preto = Image.new('L', rough.size, 0)
+                    packed = Image.merge('RGB', (branco, rough, preto))
+                    bio = io.BytesIO()
+                    packed.save(bio, 'JPEG', quality=90, subsampling=0, optimize=True)
+                    PBR_IMAGE_CACHE[chave] = (bio.getvalue(), 'image/jpeg')
+            resultado['roughness'] = s._imagem(('roughness', roughness),
+                                                  os.path.splitext(os.path.basename(roughness))[0] + '_metallic_roughness',
+                                                  *PBR_IMAGE_CACHE[chave])
+        return resultado
 
     def material(s, nome, kd, alpha=1.0, emis=None, metal=0.0, rough=0.8, tex=None, dupla_face=True):
         if nome in s._mat: return s._mat[nome]
-        pbr = {"baseColorFactor": (srgb2lin(kd[:3]) + [alpha]) if tex is None else [1, 1, 1, alpha],
+        tem_textura = bool(tex)
+        base_color = [0.005, 0.005, 0.005, alpha] if nome in EMISSIVOS else (
+            srgb2lin(kd[:3]) + [alpha] if not tem_textura else [1, 1, 1, 1])
+        pbr = {"baseColorFactor": base_color,
                "metallicFactor": metal, "roughnessFactor": rough}
-        if tex is not None: pbr["baseColorTexture"] = {"index": tex}
+        if tex and 'diffuse' in tex: pbr["baseColorTexture"] = {"index": tex['diffuse']}
+        if tex and 'roughness' in tex:
+            # glTF armazena a rugosidade no canal G de metallicRoughnessTexture.
+            pbr["metallicRoughnessTexture"] = {"index": tex['roughness']}
         m = {"name": nome, "pbrMetallicRoughness": pbr, "doubleSided": dupla_face}
+        if tex and 'normal' in tex: m["normalTexture"] = {"index": tex['normal'], "scale": 1.0}
         if alpha < 1.0: m["alphaMode"] = "BLEND"                # ALPHA do MATS -> alphaMode BLEND
-        if emis is not None: m["emissiveFactor"] = srgb2lin(emis[:3])
+        if emis is not None:
+            m["emissiveFactor"] = [1.0, 1.0, 1.0] if nome in EMISSIVOS else srgb2lin(emis[:3])
+        if nome == 'vidro':
+            m["extensions"] = {
+                "KHR_materials_transmission": {"transmissionFactor": 1.0},
+                "KHR_materials_ior": {"ior": 1.5},
+            }
+            s.extensions_used.update(("KHR_materials_transmission", "KHR_materials_ior"))
         s.mats.append(m); s._mat[nome] = len(s.mats) - 1; return s._mat[nome]
 
     def malha(s, nome, prims):
@@ -113,6 +176,7 @@ class GLB:
         j = {"asset": {"version": "2.0", "generator": "LUMINA export_web.py (unidade: metro, y para cima)", "extras": extras or {}},
              "scene": 0, "scenes": [{"nodes": raizes}], "nodes": s.nodes, "meshes": s.meshes, "materials": s.mats,
              "accessors": s.accs, "bufferViews": s.views, "buffers": [{"byteLength": len(s.buf)}]}
+        if s.extensions_used: j["extensionsUsed"] = sorted(s.extensions_used)
         if s.images: j["images"] = s.images; j["textures"] = s.texs; j["samplers"] = s.samplers
         js = json.dumps(j, separators=(',', ':'), ensure_ascii=False).encode('utf-8'); js += b' ' * ((4 - len(js) % 4) % 4)
         bn = bytes(s.buf) + b'\0' * ((4 - len(s.buf) % 4) % 4)
@@ -138,36 +202,56 @@ def ler_mtl(caminho):
     return mats
 
 def ler_obj(caminho):
-    """Retorna {material: (pos, nrm, idx)} e o dict do MTL. Vértices únicos por par (v, vn)."""
-    v = []; vn = []; faces = {}; cur = '_'; mtl = {}
+    """Retorna {material: (pos, nrm, uv, idx)} e o dict do MTL."""
+    v = []; vt = []; vn = []; faces = {}; cur = '_'; mtl = {}
     base = os.path.dirname(caminho)
     for ln in open(caminho, encoding='utf-8'):
         p = ln.split()
         if not p or p[0].startswith('#'): continue
         if p[0] == 'mtllib': mtl = ler_mtl(os.path.join(base, p[1]))
         elif p[0] == 'v': v.append(tuple(map(float, p[1:4])))
+        elif p[0] == 'vt': vt.append(tuple(map(float, p[1:3])))
         elif p[0] == 'vn': vn.append(tuple(map(float, p[1:4])))
         elif p[0] == 'usemtl': cur = p[1]
         elif p[0] == 'f':
             ids = []
             for t in p[1:]:
-                a = t.split('/'); ids.append((int(a[0]) - 1, int(a[2]) - 1 if len(a) > 2 and a[2] else -1))
+                a = t.split('/')
+                ids.append((int(a[0]) - 1,
+                            int(a[1]) - 1 if len(a) > 1 and a[1] else -1,
+                            int(a[2]) - 1 if len(a) > 2 and a[2] else -1))
             for i in range(1, len(ids) - 1): faces.setdefault(cur, []).append((ids[0], ids[i], ids[i + 1]))
     out = {}
     for m, fs in faces.items():
-        mp = {}; pos = []; nrm = []; idx = []
+        mp = {}; pos = []; nrm = []; uv = []; idx = []
         for tri in fs:
             for key in tri:
                 if key not in mp:
-                    mp[key] = len(pos); pos.append(v[key[0]]); nrm.append(vn[key[1]] if key[1] >= 0 else (0, 1, 0))
+                    mp[key] = len(pos); pos.append(v[key[0]])
+                    uv.append(vt[key[1]] if key[1] >= 0 else (0, 0))
+                    nrm.append(vn[key[2]] if key[2] >= 0 else (0, 1, 0))
                 idx.append(mp[key])
-        out[m] = (np.array(pos, np.float32), np.array(nrm, np.float32), np.array(idx))
+        out[m] = (np.array(pos, np.float32), np.array(nrm, np.float32),
+                  np.array(uv, np.float32) if any(k[1] >= 0 for tri in fs for k in tri) else None,
+                  np.array(idx))
     return out, mtl
+
+def textura_pbr(glb, nome):
+    arquivos = PBR.get(nome)
+    if not arquivos: return None
+    paths = {mapa: os.path.join(OUT, 'texturas', arquivo) for mapa, arquivo in arquivos.items()}
+    ausentes = [p for p in paths.values() if not os.path.isfile(p)]
+    if ausentes:
+        raise FileNotFoundError('Mapas PBR ausentes; rode python baixar_texturas.py antes do exportador: '
+                                + ', '.join(os.path.basename(p) for p in ausentes))
+    return glb.textura(**paths)
 
 def mat_do_mtl(glb, nome, mtl):
     d = mtl.get(nome, {'kd': G.MATS.get(nome, (0.7, 0.7, 0.7)), 'tr': 0.0, 'ke': None})
-    me, ru = PBR.get(nome, (0.0, 0.8))
-    return glb.material(nome, d['kd'], round(1 - d['tr'], 3), d['ke'] if d['ke'] else None, me, ru)
+    me, ru = PBR_FACTORS.get(nome, (0.0, 0.8))
+    alpha = 1.0 if nome == 'vidro' else round(1 - d['tr'], 3)
+    return glb.material(nome, d['kd'], alpha, d['ke'] if d['ke'] else None, me, ru,
+                        tex=textura_pbr(glb, nome))
 
 # ---------------------------------------------------------------- 1) uma peça: OBJ web -> GLB
 def peca_glb(nome, info, destino):
@@ -175,7 +259,8 @@ def peca_glb(nome, info, destino):
     if not os.path.exists(obj): raise SystemExit(f'OBJ web ausente: {obj} (rode build_a.py antes)')
     grupos, mtl = ler_obj(obj)
     g = GLB()
-    prims = [(mat_do_mtl(g, m, mtl), pos, nrm, None, idx) for m, (pos, nrm, idx) in grupos.items()]
+    prims = [(mat_do_mtl(g, m, mtl), pos, nrm, uv, idx)
+             for m, (pos, nrm, uv, idx) in grupos.items()]
     dims = [round(float(x), 1) for x in info['dims']] if 'dims' in info else None
     n = g.no(nome, g.malha(nome, prims), extras={"descricao": info['desc'], "categoria": info['cat'], "dimensoes_cm_LxAxP": dims})
     return g.salvar(destino, [n], {"peca": nome, "descricao": info['desc']})
@@ -184,6 +269,14 @@ def peca_glb(nome, info, destino):
 FLOORTEX = {'areia': 'porcelanato_areia', 'claro': 'porcelanato_claro', 'marmore': 'marmore_bege'}
 FLOORBASE = {'areia': 'DCCBAE', 'claro': 'E4DDD0', 'marmore': 'E6DED0'}
 
+def uv_planar(vs, nrm):
+    eixo = int(np.argmax(np.abs(nrm)))
+    eixos = ((2, 1), (0, 2), (0, 1))[eixo]
+    coords = np.asarray([[v[eixos[0]], v[eixos[1]]] for v in vs], dtype=float)
+    minimo = coords.min(0); extensao = coords.max(0) - minimo
+    extensao[extensao < 1e-9] = 1.0
+    return (coords - minimo) / extensao
+
 def grupos_de_polys(polys, uvfn=None):
     """polys (cm) -> {material: [pos, nrm, uv, idx]} em METROS; normal por polígono (Newell); descarta degenerados."""
     acc = {}; descartados = 0
@@ -191,9 +284,10 @@ def grupos_de_polys(polys, uvfn=None):
         n, area = G.newell(vs)
         if n is None or area < 1e-4: descartados += 1; continue
         g = acc.setdefault(m, {'pos': [], 'nrm': [], 'uv': [], 'idx': []}); b = len(g['pos'])
-        for v in vs:
+        uvs = [uvfn(v) for v in vs] if uvfn else uv_planar(vs, n)
+        for v, uv in zip(vs, uvs):
             g['pos'].append((v[0] * UNIT, v[1] * UNIT, v[2] * UNIT)); g['nrm'].append(tuple(n))
-            if uvfn: g['uv'].append(uvfn(v))
+            g['uv'].append(uv)
         for i in range(1, len(vs) - 1): g['idx'] += [b, b + i, b + i + 1]
     return acc, descartados
 
@@ -203,10 +297,11 @@ def prims_de_polys(glb, polys, matfn=None):
     for m, g in acc.items():
         mi = matfn(m) if matfn else None
         if mi is None:
-            me, ru = PBR.get(m, (0.0, 0.9 if m.startswith('w_') else 0.8))
-            mi = glb.material(m, G.MATS[m], G.ALPHA.get(m, 1.0), G.MATS[m] if m in EMISSIVOS else None, me, ru,
-                              dupla_face=(m != 'teto'))        # teto: face única (voltada p/ baixo) => some na vista aérea
-        prims.append((mi, g['pos'], g['nrm'], None, g['idx']))
+            me, ru = PBR_FACTORS.get(m, (0.0, 0.9 if m.startswith('w_') else 0.8))
+            alpha = 1.0 if m == 'vidro' else G.ALPHA.get(m, 1.0)
+            mi = glb.material(m, G.MATS[m], alpha, G.MATS[m] if m in EMISSIVOS else None, me, ru,
+                              tex=textura_pbr(glb, m), dupla_face=(m != 'teto'))
+        prims.append((mi, g['pos'], g['nrm'], g['uv'], g['idx']))
     return prims, dr
 
 def predio_glb(destino, textura_piso=True):
@@ -229,10 +324,10 @@ def predio_glb(destino, textura_piso=True):
     H = 0.5                                                       # cm acima da laje (evita z-fighting na vista superior)
     for k, nome, (x0, y0, x1, y1), ft in L.ROOMS:
         if textura_piso:
-            tex = g.textura(os.path.join(OUT, 'texturas', FLOORTEX[ft] + '.png'))
-            mi = g.material('piso_' + k, (1, 1, 1), 1.0, None, 0.0, 0.55, tex=tex, dupla_face=False)
+            tex = textura_pbr(g, 'porcelain')
+            mi = g.material('piso_' + k, (1, 1, 1), 1.0, None, 0.0, 0.5, tex=tex, dupla_face=False)
         else:
-            c = G.H(FLOORBASE[ft]); mi = g.material('piso_' + k, c, 1.0, None, 0.0, 0.55, dupla_face=False)
+            c = G.H(FLOORBASE[ft]); mi = g.material('piso_' + k, c, 1.0, None, 0.0, 0.5, dupla_face=False)
         quad = [(m_, vs) for m_, vs in [('x', [(x0, H, y1), (x1, H, y1), (x1, H, y0), (x0, H, y0)])]]
         acc, d = grupos_de_polys(quad, uvfn=lambda v: (v[0] / 120.0, v[2] / 120.0))   # 1 repetição = 120 cm (2x2 placas de 60)
         gg = acc['x']; piso_prims.append((mi, gg['pos'], gg['nrm'], gg['uv'] if textura_piso else None, gg['idx']))
@@ -413,6 +508,11 @@ def main():
     ap.add_argument('--otimizar', choices=['draco', 'meshopt'], help='comprime os GLB com gltf-transform (npx; precisa de internet)')
     ap.add_argument('--sem-zip', action='store_true', help='não gera dist/LUMINA_WEB.zip')
     a = ap.parse_args()
+    mapas = sorted({arquivo for mapas_pbr in PBR.values() for arquivo in mapas_pbr.values()})
+    ausentes = [nome for nome in mapas if not os.path.isfile(os.path.join(OUT, 'texturas', nome))]
+    if ausentes:
+        raise SystemExit('Texturas PBR ausentes: ' + ', '.join(ausentes)
+                         + '. Rode python baixar_texturas.py antes de export_web.py.')
     rel = ['VERIFICAÇÃO DO PACOTE WEB — LÚMINA (export_web.py)', '']
     erros = []
 
