@@ -49,7 +49,7 @@ function visaoGeral() {
 }
 
 function montarUI() {
-  const vistasDoModelViewer = new Set(['recepcao', 'espera', 'tecnologia', 'botox', 'corredor', 'wc_acessivel', 'aerea', 'superior']);
+  const vistasDoModelViewer = new Set(['recepcao', 'espera', 'botox', 'peeling', 'corredor', 'wc_acessivel', 'aerea', 'superior']);
   views.filter((v) => vistasDoModelViewer.has(v.id)).forEach((v) => {
     const b = document.createElement('button');
     b.type = 'button'; b.dataset.id = v.id; b.setAttribute('aria-pressed', 'false');

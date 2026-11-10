@@ -188,8 +188,15 @@ def write_obj_web(polys, folder, name, unit=0.01, texture_scales=None):
 
 # ---------- renderer (z-buffer) ----------
 def look_at(eye,target,up=(0,1,0)):
-    eye=np.array(eye,float); f=np.array(target,float)-eye; f/=np.linalg.norm(f)
-    r=np.cross(f,up); r/=np.linalg.norm(r); u=np.cross(r,f)
+    eye=np.array(eye,float); f=np.array(target,float)-eye
+    fn=np.linalg.norm(f)
+    if fn<1e-12: raise ValueError('Camera eye and target must differ')
+    f/=fn
+    up=np.asarray(up,float); r=np.cross(f,up); rn=np.linalg.norm(r)
+    if rn<1e-8:
+        up=np.array((0,0,1) if abs(f[2])<0.9 else (1,0,0),float)
+        r=np.cross(f,up); rn=np.linalg.norm(r)
+    r/=rn; u=np.cross(r,f)
     return eye,r,u,f
 
 def render(polys, eye, target, fov=60, size=(1600,1000), ss=1.4, bg=(0.93,0.91,0.88), sun=(-0.35,-0.8,-0.5), alpha_mats=ALPHA, ambient=0.52):

@@ -233,7 +233,7 @@ function irParaVista(v, permitirAndar = true) {
   irPara(v.eye, v.target, v.fov);
 }
 
-const vistasDaBarra = ['recepcao', 'espera', 'tecnica', 'botox', 'drenagem', 'peeling', 'banheiro', 'tecnologia'];
+const vistasDaBarra = ['recepcao', 'espera', 'botox', 'peeling', 'banheiro'];
 {
   const frag = document.createDocumentFragment();
   vistasDaBarra.forEach((id) => {

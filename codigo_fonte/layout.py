@@ -11,20 +11,16 @@ def dims(model):
 ROOMS=[
  ('recepcao','Recepção',(15,1635,415,1985),'areia'),
  ('espera','Sala de espera',(425,1635,985,1985),'areia'),
- ('circulacao','Circulação principal',(425,15,555,1635),'areia'),
+ ('circulacao','Circulação principal',(425,625,555,1635),'areia'),
  ('ramal','Circulação (ramal técnico)',(565,1245,985,1365),'claro'),
  ('consultorio','Consultório / Avaliação',(15,1345,415,1625),'areia'),
- ('botox','Sala de Botox e procedimentos faciais',(15,985,415,1335),'claro'),
- ('peeling','Sala de Peeling e Limpeza de Pele',(15,625,415,975),'claro'),
- ('drenagem','Sala de Drenagem',(15,265,415,615),'claro'),
- ('deposito','Depósito / Armazenamento',(15,15,415,255),'claro'),
+ ('botox','Consultório 1',(15,985,415,1335),'claro'),
+ ('peeling','Consultório 2',(15,625,415,975),'claro'),
+ ('deposito','Depósito / Armazenamento',(565,625,985,925),'claro'),
  ('banheiro_clientes','Banheiro de clientes',(565,1375,755,1625),'marmore'),
  ('banheiro_acessivel','Banheiro acessível',(765,1375,985,1625),'marmore'),
  ('dml','DML / Área de limpeza',(565,935,725,1235),'claro'),
  ('copa','Copa / Área de funcionários',(735,935,985,1235),'claro'),
- ('tecnologia','Sala de Tecnologia Estética (Ultraformer / Lavieen)',(565,445,985,925),'claro'),
- ('descanso','Área de funcionários (descanso / vestiário)',(565,185,985,435),'areia'),
- ('area_tecnica','Área técnica (TI / elétrica)',(565,15,985,175),'claro'),
 ]
 RECT={k:r for k,_,r,_ in ROOMS}
 NAME={k:n for k,n,_,_ in ROOMS}
@@ -32,33 +28,30 @@ NAME={k:n for k,n,_,_ in ROOMS}
 # ---------------- paredes (eixos, cm) ----------------
 E=15; I=10
 BASE_WALLS=[  # (xs,ys,xe,ye,thickness,kind)
- (7.5,7.5,992.5,7.5,E,'ext'),(992.5,7.5,992.5,1992.5,E,'ext'),(992.5,1992.5,7.5,1992.5,E,'ext'),(7.5,1992.5,7.5,7.5,E,'ext'),
- (420,7.5,420,1630,I,'int'),          # corredor | coluna esquerda
+ (7.5,617.5,992.5,617.5,E,'ext'),(992.5,617.5,992.5,1992.5,E,'ext'),(992.5,1992.5,7.5,1992.5,E,'ext'),(7.5,1992.5,7.5,617.5,E,'ext'),
+ (420,620,420,1630,I,'int'),
  (420,1630,420,1800,I,'div'),         # divisória ripada recepção/espera
- (560,7.5,560,1240,I,'int'),(560,1370,560,1630,I,'int'),
+ (560,620,560,1240,I,'int'),
+ (560,1370,560,1630,I,'int'),
  (730,930,730,1240,I,'int'),(760,1370,760,1630,I,'int'),
  (7.5,1630,420,1630,I,'int'),(560,1630,992.5,1630,I,'int'),
- (7.5,1340,420,1340,I,'int'),(7.5,980,420,980,I,'int'),(7.5,620,420,620,I,'int'),(7.5,260,420,260,I,'int'),
+ (7.5,1340,420,1340,I,'int'),(7.5,980,420,980,I,'int'),
  (555,1370,992.5,1370,I,'int'),(555,1240,992.5,1240,I,'int'),
- (560,930,992.5,930,I,'int'),(560,440,992.5,440,I,'int'),(560,180,992.5,180,I,'int'),
+ (560,930,992.5,930,I,'int'),
 ]
 # ---------------- portas / janelas ----------------
 # porta: id, modelo, (cx,cy), largura, eixo do vão ('V'/'H'), swing (N/S/E/W), dobradiça ('min'/'max'), ambiente
 DOORS=[
  ('P-Consultório','porta_80',(420,1575),80,'V','W','max','consultorio'),
- ('P-Botox','porta_80',(420,1285),80,'V','W','max','botox'),
- ('P-Peeling','porta_80',(420,925),80,'V','W','max','peeling'),
- ('P-Drenagem','porta_80',(420,565),80,'V','W','max','drenagem'),
- ('P-Depósito','porta_80',(420,205),80,'V','W','max','deposito'),
- ('P-Tecnologia','porta_90',(560,875),90,'V','E','max','tecnologia'),
- ('P-Descanso','porta_80',(560,385),80,'V','E','max','descanso'),
- ('P-Área técnica','porta_80',(560,100),80,'V','E','max','area_tecnica'),
+ ('P-Consultório 1','porta_80',(420,1285),80,'V','W','max','botox'),
+ ('P-Consultório 2','porta_80',(420,925),80,'V','W','max','peeling'),
+ ('P-Depósito','porta_80',(560,775),80,'V','W','max','deposito'),
  ('P-WC clientes','porta_80',(610,1370),80,'H','N','min','ramal'),
  ('P-WC acessível','porta_90',(830,1370),90,'H','N','min','ramal'),
  ('P-DML','porta_80',(645,1240),80,'H','N','max','dml'),
  ('P-Copa','porta_80',(785,1240),80,'H','N','max','copa'),
  ('P-Principal','porta_principal_120',(490,1992.5),120,'H','N','both','espera'),
- ('P-Serviço','porta_servico_90',(490,7.5),90,'H','N','min','circulacao'),
+ ('P-Serviço','porta_servico_90',(490,617.5),90,'H','N','min','circulacao'),
 ]
 # janela: id, modelo, (cx,cy), largura, altura, elevação, eixo
 WINDOWS=[
@@ -66,17 +59,13 @@ WINDOWS=[
  ('J-Espera frente','janela_300x150',(790,1992.5),300,150,90,'H'),
  ('J-Recepção lateral','janela_160x150',(7.5,1810),160,150,90,'V'),
  ('J-Consultório','janela_110x120',(7.5,1495),110,120,100,'V'),
- ('J-Botox','janela_140x120',(7.5,1160),140,120,100,'V'),
- ('J-Peeling','janela_140x120',(7.5,800),140,120,100,'V'),
- ('J-Drenagem','janela_140x120',(7.5,440),140,120,100,'V'),
- ('J-Depósito','janela_80x60',(7.5,135),80,60,150,'V'),
+ ('J-Consultório 1','janela_140x120',(7.5,1160),140,120,100,'V'),
+ ('J-Consultório 2','janela_140x120',(7.5,800),140,120,100,'V'),
+ ('J-Depósito','janela_80x60',(992.5,775),80,60,150,'V'),
  ('J-Espera lateral','janela_140x140',(992.5,1800),140,140,100,'V'),
  ('J-WC acessível','janela_60x50',(992.5,1520),60,50,160,'V'),
  ('J-Ramal','janela_100x140',(992.5,1305),100,140,90,'V'),
  ('J-Copa','janela_100x100',(992.5,1085),100,100,115,'V'),
- ('J-Tecnologia','janela_160x130',(992.5,690),160,130,100,'V'),
- ('J-Descanso','janela_140x130',(992.5,310),140,130,100,'V'),
- ('J-Área técnica','janela_60x50',(992.5,95),60,50,160,'V'),
 ]
 
 # ---------------- mobiliário ----------------
@@ -155,31 +144,6 @@ def build_items():
     put('spot_direcionavel',215,800,0,283,r,'light',name='Spot técnico sobre a maca',power=0.6)
     put('painel_led_60',150,730,0,297,r,'light',name='Painel LED técnico',power=0.6); put('painel_led_60',290,880,0,297,r,'light',name='Painel LED técnico',power=0.6)
     put('fita_led_400',215,630,0,285,r,'light',name='LED indireto',power=0.25)
-    # ===== DRENAGEM =====
-    r='drenagem'
-    put('maca_profissional',215,440,0,0,r,name='Maca profissional'); put('poltrona_drenagem',350,310,90,0,r)
-    at_wall('armario_alto_100','S',100,r,0,0); put('carrinho_auxiliar',330,520,0,0,r)
-    put('planta_grande',50,300,0,0,r); put('quadro_abstrato',200,265+1.5,0,130,r); put('vaso_decor',150,300,0,0,r,name='Vaso decorativo') if False else None
-    put('mesa_lateral',300,315,0,0,r) if False else None
-    put('fita_led_400',215,270,0,285,r,'light',name='LED indireto acolhedor',power=0.25)
-    put('fita_led_400',215,610,0,285,r,'light',name='LED indireto acolhedor',power=0.25)
-    # ===== TECNOLOGIA =====
-    r='tecnologia'
-    put('maca_profissional',775,690,0,0,r,name='Maca profissional')
-    at_wall('ultraformer','E',590,r,0,0,name='Ultraformer'); at_wall('lavieen','E',800,r,0,0,name='Lavieen')
-    at_wall('cadeira_visita','W',600,r,0,0); at_wall('cadeira_visita','W',665,r,0,0)
-    put('carrinho_auxiliar',740,785,0,0,r)
-    at_wall('bancada_pia_220','N',800,r,0,0,name='Bancada com pia'); at_wall('armario_alto_100','N',625,r,0,0); at_wall('armario_alto_60','N',945,r,0,0)
-    put('espelho_140x90',800,445+1.5,0,130,r); put('lixeira',700,525,0,0,r); put('conjunto_materiais',770,478,0,90,r)
-    put('spot_direcionavel',775,690,0,283,r,'light',name='Spot técnico sobre a maca',power=0.6)
-    for x,y in((650,560),(900,560),(650,800),(900,800)): put('painel_led_60',x,y,0,297,r,'light',name='Painel LED técnico',power=0.6)
-    # ===== DESCANSO =====
-    r='descanso'
-    at_wall('armario_vestiario_200','N',680,r,0,0); at_wall('sofa_2_lugares','S',900,r,0,0); put('mesa_lateral',795,412,0,0,r)
-    put('planta_grande',955,215,0,0,r)
-    # ===== ÁREA TÉCNICA =====
-    r='area_tecnica'
-    at_wall('rack_ti','N',690,r,0,0); at_wall('quadro_eletrico','E',95,r,0,110); at_wall('prateleiras_dml','N',850,r,0,0,name='Prateleiras técnicas')
     # ===== COPA =====
     r='copa'
     at_wall('bancada_pia_200','E',1050,r,0,0,name='Bancada com pia'); put('microondas',955,1120,90,90,r)
@@ -192,8 +156,8 @@ def build_items():
     put('balde_e_rodo',585,1205,0,0,r)
     # ===== DEPÓSITO =====
     r='deposito'
-    at_wall('estante_deposito_360','N',215,r,0,0); at_wall('estante_deposito_160','W',150,r,0,0)
-    at_wall('armario_alto_120','S',150,r,0,0); put('caixas_empilhadas',300,130,0,0,r)
+    at_wall('estante_deposito_360','N',775,r,0,0); at_wall('estante_deposito_160','S',900,r,0,0)
+    at_wall('armario_alto_120','S',650,r,0,0); put('caixas_empilhadas',900,700,0,0,r)
     # ===== BANHEIRO CLIENTES =====
     r='banheiro_clientes'
     at_wall('vaso_sanitario','S',690,r,0,0); at_wall('lavatorio_60','E',1500,r,0,0)
@@ -207,17 +171,17 @@ def build_items():
     put('lixeira',965,1400,0,0,r)
     # ===== CIRCULAÇÃO =====
     r='circulacao'
-    for y in (1430,1105,745,385): put('painel_ripado_150x260',427,y,270,0,r,name='Painel ripado (circulação)')
-    for y in (120,400,700,1000,1300,1560): put('spot_embutido',490,y,0,298,r,'light',name='Spot LED embutido',power=0.4)
+    for y in (1430,1105,745): put('painel_ripado_150x260',427,y,270,0,r,name='Painel ripado (circulação)')
+    for y in (700,1000,1300,1560): put('spot_embutido',490,y,0,298,r,'light',name='Spot LED embutido',power=0.4)
     # spots gerais
     def spots(room,xs,ys):
         for x in xs:
             for y in ys: put('spot_embutido',x,y,0,298,room,'light',name='Spot LED embutido',power=0.4)
     spots('recepcao',(100,215,330),(1700,1900)); spots('espera',(500,650,800,930),(1700,1900))
-    spots('consultorio',(120,250,360),(1420,1560)); spots('drenagem',(120,215,320),(340,540))
+    spots('consultorio',(120,250,360),(1420,1560))
     spots('banheiro_clientes',(660,),(1440,1560)); spots('banheiro_acessivel',(875,),(1440,1560))
     spots('ramal',(650,800,930),(1305,)); spots('dml',(645,),(1000,1150)); spots('copa',(860,),(1000,1150))
-    spots('descanso',(650,780,900),(250,360)); spots('area_tecnica',(700,850),(95,)); spots('deposito',(120,215,320),(135,))
+    spots('deposito',(650,775,900),(700,850))
     return ITEMS
 
 def build_doors():
@@ -263,15 +227,15 @@ def _mask(poly,X,Y):
 COUNTERS={'balcao_recepcao','armario_baixo_240','bancada_160','bancada_pia_200','bancada_pia_220','lavatorio_60','mesa_escritorio_140'}
 def validate(items,doors,windows):
     issues=[]; log=[]
-    # 1) planta cabe em 10x20 e ambientes sem sobreposição
+    # 1) ambientes dentro do limite interno atual e sem sobreposição
     for k,(x0,y0,x1,y1) in RECT.items():
-        if x0<15 or y0<15 or x1>985 or y1>1985: issues.append(f'ambiente fora do imóvel: {k}')
+        if x0<15 or y0<625 or x1>985 or y1>1985: issues.append(f'ambiente fora do imóvel: {k}')
     keys=list(RECT)
     for i,a in enumerate(keys):
         for b in keys[i+1:]:
             A,B=RECT[a],RECT[b]
             if min(A[2],B[2])-max(A[0],B[0])>0.01 and min(A[3],B[3])-max(A[1],B[1])>0.01: issues.append(f'ambientes sobrepostos: {a} x {b}')
-    log.append(f'Ambientes: {len(RECT)}; nenhum fora dos limites internos 15..985 x 15..1985 cm; sobreposições entre ambientes: {sum(1 for s in issues if "sobrepostos" in s)}')
+    log.append(f'Ambientes: {len(RECT)}; nenhum fora dos limites internos 15..985 x 625..1985 cm; sobreposições entre ambientes: {sum(1 for s in issues if "sobrepostos" in s)}')
     # 2) móveis dentro do ambiente
     fps=[]
     for it in items:

@@ -1,15 +1,15 @@
 VERIFICAÇÃO DO PACOTE WEB — LÚMINA (export_web.py)
 
 [OK] 89 peças convertidas OBJ→GLB (117663 KB no total), todas validadas; dimensões do GLB (m×100) = dimensões de models.REG (±0,6 cm)
-[OK] predio_completo.glb: 13.84 MB, 31830 triângulos, 66 materiais, 14666 polígonos de scene.full_scene(ceilings=True); 0 polígonos degenerados descartados
-[OK] Escala em metros: caixa do prédio = 10.00 × 20.00 m, pé-direito 3.00 m (planta 10×20 m, 3 m)
+[OK] predio_completo.glb: 13.27 MB, 23030 triângulos, 58 materiais, 10473 polígonos de scene.full_scene(ceilings=True); 0 polígonos degenerados descartados
+[OK] Escala em metros: caixa do prédio = 10.00 × 13.90 m, pé-direito 3.00 m (planta 10.00×13.90 m, 3 m)
 [OK] predio_completo.glb < 20 MB
 [OK] Materiais com alphaMode BLEND (de ALPHA): espelho
-[OK] 16 materiais piso_<ambiente> presentes (realce por ambiente no web app)
+[OK] 12 materiais piso_<ambiente> presentes (realce por ambiente no web app)
 [OK] Nós do glTF: pisos, paredes, teto, esquadrias, mobiliario, LUMINA_Clinica
-[OK] 12 vistas = câmeras de build_b.RENDER_CAMS (render_01..12); órbita (θ, φ, r) conferida por ida e volta com a posição do olho
-[OK] 16 ambientes (exatamente os de layout.ROOMS); colisão: 61 trechos de parede (vãos de porta livres), 72 móveis
-[OK] dist/web montado: 16 arquivos no pré-cache do service worker (versão f2536df6); vendor local: não (usa CDN com versões fixas)
+[OK] 9 vistas = câmeras de build_b.RENDER_CAMS (render_01..12); órbita (θ, φ, r) conferida por ida e volta com a posição do olho
+[OK] 12 ambientes (exatamente os de layout.ROOMS); colisão: 45 trechos de parede (vãos de porta livres), 51 móveis
+[OK] dist/web montado: 16 arquivos no pré-cache do service worker (versão 45dcd591); vendor local: não (usa CDN com versões fixas)
 
 LIMITAÇÕES: a validação é estrutural (GLB bem formado, limites, normais, min/max, imagens, escala).
 Renderização real em <model-viewer>/Three.js depende do navegador: confira visualmente após `npx serve dist/web`.

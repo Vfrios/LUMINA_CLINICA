@@ -25,6 +25,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 RAIZ = os.path.dirname(os.path.abspath(__file__))
+sys.stdout.reconfigure(encoding='utf-8')
 os.environ.setdefault('LUMINA_OUT', RAIZ)                      # build_a.OUT = raiz do projeto
 sys.path.insert(0, os.path.join(RAIZ, 'codigo_fonte'))
 
@@ -39,6 +40,15 @@ OUT = A.OUT
 DIST = os.path.join(OUT, 'dist')
 WEB_DIST = os.path.join(DIST, 'web')
 UNIT = 0.01                                                     # cm -> m
+
+def limites_externos_cm():
+    paredes = [w for w in L.BASE_WALLS if w[5] == 'ext']
+    return (
+        min(min(w[0], w[2]) - w[4] / 2 for w in paredes),
+        min(min(w[1], w[3]) - w[4] / 2 for w in paredes),
+        max(max(w[0], w[2]) + w[4] / 2 for w in paredes),
+        max(max(w[1], w[3]) + w[4] / 2 for w in paredes),
+    )
 
 # ---------------------------------------------------------------- utilidades de cor / PBR
 def srgb2lin(c):
@@ -319,7 +329,8 @@ def predio_glb(destino, textura_piso=True):
     desc = 0
     # --- pisos: 1 quad por ambiente, material próprio "piso_<id>" (textura embutida + permite realce por ambiente)
     piso_prims = []
-    laje = [(scene.mat('C7B899'), [(0, 0, 2000), (1000, 0, 2000), (1000, 0, 0), (0, 0, 0)])]   # laje sob os vãos de porta
+    x0, z0, x1, z1 = limites_externos_cm()
+    laje = [(scene.mat('C7B899'), [(x0, 0, z1), (x1, 0, z1), (x1, 0, z0), (x0, 0, z0)])]   # laje sob os vãos de porta
     p, d = prims_de_polys(g, laje, lambda m: g.material('piso_base', G.MATS[m], 1.0, None, 0.0, 0.9)); piso_prims += p; desc += d
     H = 0.5                                                       # cm acima da laje (evita z-fighting na vista superior)
     for k, nome, (x0, y0, x1, y1), ft in L.ROOMS:
@@ -347,15 +358,12 @@ def predio_glb(destino, textura_piso=True):
 ROTULOS = {  # render -> (id, rótulo, descrição)
     'render_03_recepcao': ('recepcao', 'Recepção', 'Balcão, painel e letreiro LÚMINA'),
     'render_04_sala_espera': ('espera', 'Sala de espera', 'Sofá, poltronas e painel ripado'),
-    'render_05_sala_tecnologia': ('tecnologia', 'Sala de tecnologia de estética', 'Ultraformer / Lavieen (ilustrativos)'),
-    'render_06_sala_botox': ('botox', 'Sala de Botox', 'Procedimentos faciais'),
+    'render_06_sala_botox': ('botox', 'Consultório 1', 'Procedimentos faciais'),
     'render_07_corredor': ('corredor', 'Corredor', 'Circulação principal'),
     'render_08_banheiro_acessivel': ('wc_acessivel', 'WC acessível', 'Círculo de manobra Ø1,50 m'),
     'render_01_vista_aerea_fachada': ('aerea', 'Vista aérea', 'Fachada e volumetria'),
     'render_02_vista_superior': ('superior', 'Vista superior', 'Planta em perspectiva'),
-    'render_09_sala_ti': ('tecnica', 'Tecnologia', 'Sala de TI / área técnica'),
-    'render_10_sala_peeling': ('peeling', 'Sala de peeling', 'Peeling e limpeza de pele'),
-    'render_11_sala_drenagem': ('drenagem', 'Sala de drenagem', 'Procedimentos de drenagem'),
+    'render_10_sala_peeling': ('peeling', 'Consultório 2', 'Peeling e limpeza de pele'),
     'render_12_banheiro_clientes': ('banheiro', 'Banheiro', 'Banheiro de clientes'),
 }
 def orbita(eye, alvo):
@@ -408,7 +416,8 @@ def dados_colisao():
     for it in A.ITEMS:
         if it['kind'] == 'light' or it['elev'] >= 30 or it['H'] < 40: continue
         fp = np.array(L.footprint(it)); moveis.append([round(float(v) * UNIT, 3) for v in (fp[:, 0].min(), fp[:, 1].min(), fp[:, 0].max(), fp[:, 1].max())])
-    return dict(unidade='m', eixos='[x0, z0, x1, z1]', limites=[0.15, 0.15, 9.85, 19.85], altura_olhos=1.65, raio=0.22,
+    y_min=min(y0 for _, _, (_, y0, _, _), _ in L.ROOMS) / 100
+    return dict(unidade='m', eixos='[x0, z0, x1, z1]', limites=[0.15, y_min, 9.85, 19.85], altura_olhos=1.65, raio=0.22,
                 inicio=dict(pos=[4.9, 19.3], yaw_graus=0), paredes=paredes, moveis=moveis)
 
 def dados_catalogo():
@@ -535,15 +544,17 @@ def main():
     st = validar_glb(dst); lo, hi = st['bbox']
     rel.append(f'[OK] predio_completo.glb: {tam/1048576:.2f} MB, {st["tris"]} triângulos, {st["materiais"]} materiais, {npol} polígonos de scene.full_scene(ceilings=True); {desc} polígonos degenerados descartados')
     ext = (hi - lo)
-    if not (abs(ext[0] - 10) < 0.02 and abs(ext[1] - 3) < 0.02 and abs(ext[2] - 20) < 0.02): erros.append(f'bbox do prédio inesperado: {ext}')
-    else: rel.append(f'[OK] Escala em metros: caixa do prédio = {ext[0]:.2f} × {ext[2]:.2f} m, pé-direito {ext[1]:.2f} m (planta 10×20 m, 3 m)')
+    x0, z0, x1, z1 = limites_externos_cm()
+    esperado = np.array((x1 - x0, 300, z1 - z0)) * UNIT
+    if not np.allclose(ext, esperado, atol=0.02): erros.append(f'bbox do prédio inesperado: {ext}; esperado {esperado}')
+    else: rel.append(f'[OK] Escala em metros: caixa do prédio = {ext[0]:.2f} × {ext[2]:.2f} m, pé-direito {ext[1]:.2f} m (planta {ext[0]:.2f}×{ext[2]:.2f} m, 3 m)')
     if tam > 20 * 1048576: erros.append('predio_completo.glb > 20 MB: use --otimizar meshopt')
     else: rel.append('[OK] predio_completo.glb < 20 MB')
     for m in st['blend']: pass
     rel.append(f'[OK] Materiais com alphaMode BLEND (de ALPHA): {", ".join(sorted(set(st["blend"]))) or "nenhum"}')
     mats_vis = {m['name'] for m in st['json']['materials']}
     faltam = [f'piso_{k}' for k, *_ in L.ROOMS if f'piso_{k}' not in mats_vis]
-    (rel.append('[OK] 16 materiais piso_<ambiente> presentes (realce por ambiente no web app)') if not faltam else erros.append(f'faltam materiais de piso: {faltam}'))
+    (rel.append(f'[OK] {len(L.ROOMS)} materiais piso_<ambiente> presentes (realce por ambiente no web app)') if not faltam else erros.append(f'faltam materiais de piso: {faltam}'))
     rel.append(f'[OK] Nós do glTF: {", ".join(n["name"] for n in st["json"]["nodes"])}')
 
     # c) otimização opcional

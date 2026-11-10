@@ -13,8 +13,7 @@ ITEMS=L.build_items(); DOORS=L.build_doors(); WINDOWS=L.build_windows()
 
 # ---------------- paredes: divisão e cores ----------------
 ROOMCOL={'recepcao':'F1E8DA','espera':'EAD9C6','circulacao':'EBDCCB','ramal':'EBDCCB','consultorio':'F3EBDF','botox':'F4EEE4','peeling':'F4EEE4',
- 'drenagem':'EBD5C2','deposito':'F1ECE3','banheiro_clientes':'E3CDB4','banheiro_acessivel':'E3CDB4','dml':'F2EDE4','copa':'E9D8C0','tecnologia':'F1EADF',
- 'descanso':'EBD9C7','area_tecnica':'F0ECE4'}
+ 'deposito':'F1ECE3','banheiro_clientes':'E3CDB4','banheiro_acessivel':'E3CDB4','dml':'F2EDE4','copa':'E9D8C0'}
 EXT='DDCDB6'; FRONT='CF9A7A'; MARSALA='7A2E3A'; WOOD='B98A5B'
 def room_at(x,y):
     for k,(x0,y0,x1,y1) in L.RECT.items():
@@ -27,7 +26,6 @@ def side_color(seg,px,py,nx,ny):
     if k is None: 
         return FRONT if (seg[1]>1900 and seg[3]>1900) else EXT
     if k=='recepcao' and ny>0 and abs(seg[1]-1630)<1 and seg[0]<420: return MARSALA
-    if k=='drenagem' and ny>0 and abs(seg[1]-260)<1 and False: return 'D9A98C'
     return ROOMCOL[k]
 def split_walls():
     segs=[]

@@ -2,37 +2,37 @@ import os, shutil, zipfile, glob
 import layout as L, build_a as A
 from models import REG
 OUT=A.OUT
-rows=[]; tot=0
+rows=[]
 for k,n,(x0,y0,x1,y1),ft in L.ROOMS:
-    w,d=(x1-x0)/100,(y1-y0)/100; rows.append(f'| {n} | {w:.2f} × {d:.2f} | {w*d:.1f} |'); tot+=w*d
-prog={ 'Recepção':'4,00×3,50 → 4,00×3,50 (igual)','Sala de espera':'6,00×3,50 → 5,60×3,50 (−0,40 m: o vão livre de 9,70 m é dividido com a recepção de 4,00 m e a parede)',
- 'Consultório':'3,20×3,50 → 4,00×2,80 (mesma área, 11,2 m², reorientado para caber na coluna de 4,00 m)','Botox / Peeling / Drenagem':'3,50×4,00 → 4,00×3,50 (mesma área, 14 m², girados)',
- 'Tecnologia':'4,00×5,00 → 4,20×4,80 (20,2 m² ≈ 20 m²)','Banheiro de clientes':'2,20×2,50 → 1,90×2,50 (4,75 m²)','Banheiro acessível':'2,20×2,50 (igual, com círculo de manobra Ø1,50 m)',
- 'DML':'1,50×2,00 → 1,60×3,00 (4,8 m²)','Copa':'2,50×3,00 (igual)','Depósito':'2,00×2,50 → 4,00×2,40 (9,6 m², ampliado para aproveitar a coluna)'}
+    w,d=(x1-x0)/100,(y1-y0)/100; rows.append(f'| {n} | {w:.2f} × {d:.2f} | {w*d:.1f} |')
+tot=sum((r[2]-r[0])*(r[3]-r[1]) for r in L.RECT.values())/1e4
+area_externa=139.0
+prog={'Circulação principal':'1,30 × 10,10 m (13,1 m²), acompanha a nova profundidade construída',
+ 'Consultório':'4,00 × 2,80 m (11,2 m²)','Consultório 1 / Consultório 2':'4,00 × 3,50 m (14 m² cada)',
+ 'Depósito / Armazém':'4,20 × 3,00 m (12,6 m²), transferido para trás do DML e da Copa',
+ 'DML':'1,60 × 3,00 m (4,8 m²)','Copa':'2,50 × 3,00 m (7,5 m²)'}
 md=f"""# LÚMINA — Lista de ambientes, dimensões e áreas
 
-Imóvel: 10,00 × 20,00 m (200 m²), pavimento único, pé-direito 3,00 m, paredes externas 15 cm e internas 10 cm.
-Dimensões abaixo = **líquidas internas** (face a face das paredes). Área líquida somada: **{tot:.1f} m²**; paredes e espessuras: **{200-tot:.1f} m²**.
+Imóvel: 10,00 × 13,90 m (139 m²), pavimento único, pé-direito 3,00 m, paredes externas 15 cm e internas 10 cm.
+Dimensões abaixo = **líquidas internas** (face a face das paredes). Área líquida somada: **{tot:.2f} m²**; paredes, espessuras e demais áreas: **{area_externa-tot:.2f} m²**.
 
 | Ambiente | Dimensões líquidas (m) | Área (m²) |
 |---|---|---|
 """ + '\n'.join(rows) + f"""
 
 ## Ajustes em relação ao programa pedido (explicados)
-Com paredes de 15/10 cm o vão interno útil é 9,70 × 19,70 m, então algumas medidas conceituais foram ajustadas para caberem sem sobreposição:
+Com paredes de 15/10 cm o vão interno útil é 9,70 × 13,60 m; as dimensões abaixo foram organizadas para caber sem sobreposição:
 
 """ + '\n'.join(f'- **{k}**: {v}' for k,v in prog.items()) + """
 
-## Ambientes acrescentados (não estavam na lista)
+## Ambiente acrescentado (não estava na lista)
 Sobrou área após o programa pedido; ela foi usada, conforme o enunciado ("circulação, áreas técnicas e ajustes"), para:
-- **Área de funcionários (descanso/vestiário)** 4,20 × 2,50 m — complementa a Copa (item 11).
-- **Área técnica (TI/elétrica)** 4,20 × 1,60 m.
 - **Ramal de circulação** 4,20 × 1,20 m, que dá acesso aos sanitários, DML e copa (mantém os sanitários próximos à espera).
 
 ## Pontos de atenção do partido
-- O corredor principal tem 1,30 m de largura e ~16 m de comprimento (o "corredor longo" que o enunciado pede para evitar não pôde ser eliminado com este programa em 10 m de frente); foi mitigado com painéis ripados, spots contínuos, portas de saída de serviço ao fundo e janela no ramal.
+- O corredor principal tem 1,30 m de largura e 10,10 m de comprimento; termina na nova parede de fundo alinhada ao Consultório 2 e ao depósito.
 - Recepção e espera são integradas visualmente por divisória ripada parcial e vão de 1,85 m; as salas de procedimento ficam atrás da parede da recepção (privacidade).
-- Copa, DML, depósito e banheiro de clientes não têm janela (ventilação/exaustão mecânica a projetar).
+- DML e banheiro de clientes não têm janela; prever ventilação/exaustão mecânica.
 """
 open(f'{OUT}/LISTA_AMBIENTES.md','w').write(md)
 
@@ -49,7 +49,7 @@ LUMINA_CLINICA/
 │   └── predio_completo/LUMINA_Clinica_completa.obj   ← prédio inteiro em 1 peça (plano B)
 ├── texturas/                        ← porcelanato areia/claro, mármore, madeira ripada, marsala, terracota
 ├── planta/planta_2D.pdf, planta_2D.png
-├── renders/                         ← 8 imagens conceituais (vista aérea, superior, recepção, espera, tecnologia, botox, corredor, WC acessível)
+├── renders/                         ← 9 imagens conceituais (vista aérea, superior, recepção, espera, Consultório 1, Consultório 2, corredor e banheiros)
 ├── codigo_fonte/                    ← scripts Python que geram tudo (ajuste e rode de novo se quiser mudar o layout)
 ├── LISTA_AMBIENTES.md   verificacao.txt   LEIAME_INSTRUCOES.md
 ```
@@ -66,7 +66,7 @@ Também vale conferir depois de abrir: (a) o sentido de abertura das portas na p
 ## Caminho B (plano de contingência): importar os modelos
 1. Abra o Sweet Home 3D com um projeto novo.
 2. **Mobiliário > Importar mobiliário…** e escolha o `.obj` desejado (por exemplo `modelos/predio_completo/LUMINA_Clinica_completa.obj`). Na janela, marque a orientação "frente" para o lado que dá para você; as dimensões já são reais (cm).
-3. Com o prédio completo importado como uma peça (1000 × 2000 × 300 cm), posicione em x=500, y=1000. Para montar você mesmo, importe as peças de `modelos/*` individualmente e use `planta/planta_2D.png` como **imagem de fundo** (Planta > Importar imagem de fundo, escala: 10,00 m de largura).
+3. Com o prédio completo importado como uma peça (1000 × 1390 × 300 cm), posicione em x=500, y=1305. Para montar você mesmo, importe as peças de `modelos/*` individualmente e use `planta/planta_2D.png` como **imagem de fundo** (Planta > Importar imagem de fundo, escala: 10,00 m de largura).
 4. Texturas: **Modificar cômodo > Textura do piso > Importar** com os PNG de `texturas/`.
 
 ## Observações sobre os modelos

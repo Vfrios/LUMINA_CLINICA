@@ -62,17 +62,17 @@
   "nome": "Circulação principal",
   "rect": [
    4.25,
-   0.15,
+   6.25,
    5.55,
    16.35
   ],
   "largura": 1.3,
-  "profundidade": 16.2,
-  "area": 21.1,
+  "profundidade": 10.1,
+  "area": 13.1,
   "material": "piso_circulacao",
   "centro": [
    4.9,
-   8.25
+   11.3
   ],
   "camera": {
    "theta": 0,
@@ -81,7 +81,7 @@
    "target": [
     4.9,
     0.8,
-    8.25
+    11.3
    ],
    "fov": 45
   }
@@ -146,7 +146,7 @@
  },
  {
   "id": "botox",
-  "nome": "Sala de Botox e procedimentos faciais",
+  "nome": "Consultório 1",
   "rect": [
    0.15,
    9.85,
@@ -175,7 +175,7 @@
  },
  {
   "id": "peeling",
-  "nome": "Sala de Peeling e Limpeza de Pele",
+  "nome": "Consultório 2",
   "rect": [
    0.15,
    6.25,
@@ -203,59 +203,30 @@
   }
  },
  {
-  "id": "drenagem",
-  "nome": "Sala de Drenagem",
-  "rect": [
-   0.15,
-   2.65,
-   4.15,
-   6.15
-  ],
-  "largura": 4.0,
-  "profundidade": 3.5,
-  "area": 14.0,
-  "material": "piso_drenagem",
-  "centro": [
-   2.15,
-   4.4
-  ],
-  "camera": {
-   "theta": 90,
-   "phi": 28,
-   "r": 7.1,
-   "target": [
-    2.15,
-    0.8,
-    4.4
-   ],
-   "fov": 45
-  }
- },
- {
   "id": "deposito",
   "nome": "Depósito / Armazenamento",
   "rect": [
-   0.15,
-   0.15,
-   4.15,
-   2.55
+   5.65,
+   6.25,
+   9.85,
+   9.25
   ],
-  "largura": 4.0,
-  "profundidade": 2.4,
-  "area": 9.6,
+  "largura": 4.2,
+  "profundidade": 3.0,
+  "area": 12.6,
   "material": "piso_deposito",
   "centro": [
-   2.15,
-   1.35
+   7.75,
+   7.75
   ],
   "camera": {
    "theta": 90,
    "phi": 28,
-   "r": 7.1,
+   "r": 7.33,
    "target": [
-    2.15,
+    7.75,
     0.8,
-    1.35
+    7.75
    ],
    "fov": 45
   }
@@ -372,93 +343,6 @@
     8.6,
     0.8,
     10.85
-   ],
-   "fov": 45
-  }
- },
- {
-  "id": "tecnologia",
-  "nome": "Sala de Tecnologia Estética (Ultraformer / Lavieen)",
-  "rect": [
-   5.65,
-   4.45,
-   9.85,
-   9.25
-  ],
-  "largura": 4.2,
-  "profundidade": 4.8,
-  "area": 20.2,
-  "material": "piso_tecnologia",
-  "centro": [
-   7.75,
-   6.85
-  ],
-  "camera": {
-   "theta": 0,
-   "phi": 28,
-   "r": 8.02,
-   "target": [
-    7.75,
-    0.8,
-    6.85
-   ],
-   "fov": 45
-  }
- },
- {
-  "id": "descanso",
-  "nome": "Área de funcionários (descanso / vestiário)",
-  "rect": [
-   5.65,
-   1.85,
-   9.85,
-   4.35
-  ],
-  "largura": 4.2,
-  "profundidade": 2.5,
-  "area": 10.5,
-  "material": "piso_descanso",
-  "centro": [
-   7.75,
-   3.1
-  ],
-  "camera": {
-   "theta": 90,
-   "phi": 28,
-   "r": 7.33,
-   "target": [
-    7.75,
-    0.8,
-    3.1
-   ],
-   "fov": 45
-  }
- },
- {
-  "id": "area_tecnica",
-  "nome": "Área técnica (TI / elétrica)",
-  "rect": [
-   5.65,
-   0.15,
-   9.85,
-   1.75
-  ],
-  "largura": 4.2,
-  "profundidade": 1.6,
-  "area": 6.7,
-  "material": "piso_area_tecnica",
-  "centro": [
-   7.75,
-   0.95
-  ],
-  "camera": {
-   "theta": 90,
-   "phi": 28,
-   "r": 7.33,
-   "target": [
-    7.75,
-    0.8,
-    0.95
    ],
    "fov": 45
   }

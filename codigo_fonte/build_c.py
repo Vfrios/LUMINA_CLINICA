@@ -1,10 +1,11 @@
-import os, re, math, zipfile, shutil, glob
+import os, re, math, zipfile, shutil, glob, sys
 import numpy as np
 from matplotlib.path import Path
 import xml.etree.ElementTree as ET
 import layout as L, build_a as A
 from models import REG
 OUT=A.OUT
+sys.stdout.reconfigure(encoding='utf-8')
 rep=[]; problems=[]
 def ok(msg): rep.append('[OK] '+msg)
 def bad(msg): rep.append('[ALERTA] '+msg); problems.append(msg)
@@ -14,16 +15,17 @@ for l in log: ok(l)
 if iss:
     for i in iss: bad(i)
 else: ok('Nenhum móvel/equipamento fora do seu ambiente, sem sobreposição entre peças (considerando altura) e sem colisão com a varredura das portas')
-# planta dentro de 10x20
+# planta dentro de 10x13,9
 xs=[v for w in L.BASE_WALLS for v in (w[0]-w[4]/2,w[2]-w[4]/2,w[0]+w[4]/2,w[2]+w[4]/2)]
 ext=[w for w in L.BASE_WALLS if w[5]=='ext']
 bx0=min(min(w[0],w[2]) for w in ext)-7.5; bx1=max(max(w[0],w[2]) for w in ext)+7.5
 by0=min(min(w[1],w[3]) for w in ext)-7.5; by1=max(max(w[1],w[3]) for w in ext)+7.5
-(ok if (bx1-bx0,by1-by0)==(1000,2000) else bad)(f'Contorno externo (face externa das paredes de 15 cm): {bx1-bx0:.0f} x {by1-by0:.0f} cm = {(bx1-bx0)*(by1-by0)/1e4:.1f} m²')
+(ok if (bx1-bx0,by1-by0)==(1000,1390) else bad)(f'Contorno externo (face externa das paredes de 15 cm): {bx1-bx0:.0f} x {by1-by0:.0f} cm = {(bx1-bx0)*(by1-by0)/1e4:.1f} m²')
 inner=[w for w in L.BASE_WALLS if w[5]!='ext']
 if all(w[4]==10 for w in inner): ok('Paredes internas com 10 cm; externas com 15 cm; altura 300 cm')
-# somas de área
-tot=sum((r[2]-r[0])*(r[3]-r[1]) for r in L.RECT.values())/1e4; ok(f'Área líquida somada dos ambientes: {tot:.2f} m²; restante ({200-tot:.2f} m²) = paredes/espessuras')
+# totais calculados para a nova área construída de 139 m²
+tot=sum((r[2]-r[0])*(r[3]-r[1]) for r in L.RECT.values())/1e4
+ok(f'Área líquida somada dos ambientes: {tot:.2f} m²; restante ({139-tot:.2f} m²) = paredes/espessuras')
 # círculo de manobra PNE
 cx,cy,r=890,1465,75; x0,y0,x1,y1=L.RECT['banheiro_acessivel']
 if cx-r>=x0 and cx+r<=x1 and cy-r>=y0 and cy+r<=y1: ok('Banheiro acessível: círculo de manobra Ø1,50 m cabe dentro do ambiente')
@@ -37,7 +39,7 @@ ok(f'Circulação principal: {cw/100:.2f} m de largura (dentro da faixa 1,20–1
 # passagem livre nos vãos: portas
 for d in A.DOORS:
     if d['W']<80: bad('porta estreita '+d['id'])
-ok('Portas internas 0,80 m; 0,90 m em Tecnologia, WC acessível e saída de serviço; principal 1,20 m (dupla)')
+ok('Portas internas 0,80 m; 0,90 m em WC acessível e saída de serviço; principal 1,20 m (dupla)')
 # portas em paredes
 for d in A.DOORS:
     found=False
@@ -47,10 +49,30 @@ for d in A.DOORS:
         if d['axis']=='V' and not horiz and abs(w[0]-d['x'])<1 and min(w[1],w[3])<=d['y']-d['W']/2+0.5 and max(w[1],w[3])>=d['y']+d['W']/2-0.5: found=True
     if not found: bad(f"porta {d['id']} fora de parede")
 ok('Todas as portas estão inseridas em trechos de parede contínuos')
+# o depósito transferido deve preencher a ala atrás do DML e da copa
+dep=L.RECT['deposito']; dml=L.RECT['dml']; copa=L.RECT['copa']
+if dep[0]==dml[0] and dep[2]==copa[2] and dep[3]+10==dml[1]==copa[1]:
+    ok('Depósito alinhado atrás do DML e da copa; sem vão entre os ambientes')
+else: bad('depósito desalinhado ou separado do DML/copa')
+# parede lateral fecha o lado do banheiro de clientes voltado para a circulação principal
+if any(abs(w[0]-560)<1 and abs(w[2]-560)<1 and min(w[1],w[3])<=1370 and max(w[1],w[3])>=1630 for w in L.BASE_WALLS):
+    ok('Parede lateral do banheiro de clientes completa, separando-o da circulação principal')
+else: bad('parede lateral do banheiro de clientes ausente')
+# manter livre o lado interno da porta do depósito
+zona_entrada=(560,735,620,815)
+ocupam_entrada=[]
+for it in A.ITEMS:
+    if it['room']!='deposito' or it['kind']=='light': continue
+    fp=L.footprint(it)
+    if (max(p[0] for p in fp)>zona_entrada[0] and min(p[0] for p in fp)<zona_entrada[2]
+        and max(p[1] for p in fp)>zona_entrada[1] and min(p[1] for p in fp)<zona_entrada[3]):
+        ocupam_entrada.append(it['name'])
+if ocupam_entrada: bad(f"móvel obstruindo a entrada do depósito: {', '.join(ocupam_entrada)}")
+else: ok('Entrada do depósito livre de móveis')
 # janelas em paredes externas e sem colisão
 for w in A.WINDOWS:
     if w['axis']=='H': lo,hi,fix=w['x']-w['W']/2,w['x']+w['W']/2,w['y']; L_=(15,985)
-    else: lo,hi,fix=w['y']-w['W']/2,w['y']+w['W']/2,w['x']; L_=(15,1985)
+    else: lo,hi,fix=w['y']-w['W']/2,w['y']+w['W']/2,w['x']; L_=(625,1985)
     if lo<L_[0] or hi>L_[1]: bad(f"janela {w['id']} fora do vão externo")
     for d in A.DOORS:
         if d['axis']==w['axis'] and abs((d['y'] if d['axis']=='H' else d['x'])-fix)<1:
@@ -90,7 +112,7 @@ for f in glob.glob(f'{OUT}/modelos/**/*.obj',recursive=True):
     if not os.path.exists(os.path.join(os.path.dirname(f),mt)): broken+=1
 (ok if not broken else bad)(f'{len(glob.glob(OUT+"/modelos/**/*.obj",recursive=True))} arquivos OBJ com MTL no mesmo diretório (caminhos relativos, sem referência quebrada)')
 ok('Escala: todos os modelos autorados em cm reais (ex.: maca 190×65, balcão 240, sofá 240, porta 80/90/120, pé-direito 300)')
-open(f'{OUT}/verificacao.txt','w').write('VERIFICAÇÃO AUTOMÁTICA - LÚMINA (script build_c.py)\n\n'+'\n'.join(rep)+
+open(f'{OUT}/verificacao.txt','w',encoding='utf-8').write('VERIFICAÇÃO AUTOMÁTICA - LÚMINA (script build_c.py)\n\n'+'\n'.join(rep)+
  '\n\nLIMITAÇÕES: o .sh3d NÃO foi aberto no Sweet Home 3D real (o programa não existe neste ambiente); a verificação é estrutural (XML, referências, geometria).\n'
  'Conformidade normativa (RDC 50, NBR 9050, instalações) NÃO foi verificada.\n')
 print('\n'.join(rep)); print('PROBLEMAS:',len(problems))
