@@ -3,7 +3,7 @@
 //
 // Parâmetros de URL (opcionais):
 //   ?debug      → a cada 2 s no console: quadro médio/máx, custo de render, eventos de mouse/s, maior |dx| e maior giro por quadro
-//   ?suav=35    → suavização do olhar (taxa 1/s; 0 = desliga; padrão 35 ≈ 30 ms). Maior = mais direto
+//   ?suav=70    → suavização do olhar (taxa 1/s; 0 = desliga; padrão 70, resposta mais direta)
 //   ?dpr=1.5    → pixel ratio (padrão 1)
 //   ?aa=0       → desliga antialias
 //   ?nohud      → desliga toda escrita no HUD (teste A/B)
@@ -20,7 +20,7 @@ const PIXEL_RATIO = Number(params.get('dpr')) || 1;
 const ANTIALIAS = params.get('aa') !== '0';
 const DEBUG = params.has('debug');
 const SEM_HUD = params.has('nohud');
-const SUAVIZACAO = params.has('suav') ? Math.max(0, Number(params.get('suav')) || 0) : 35;
+const SUAVIZACAO = params.has('suav') ? Math.max(0, Number(params.get('suav')) || 0) : 70;
 // Só tela de toque PRIMÁRIA: 'ontouchstart' in window dá true em notebooks com touchscreen
 const TOQUE = matchMedia('(pointer:coarse)').matches;
 if (TOQUE) document.body.classList.add('toque');
